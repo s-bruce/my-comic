@@ -14,6 +14,7 @@ class ComicCreateForm extends React.Component {
       title: '',
       text: '',
       cloudinaryImageUrl: '',
+      cloudinaryFile: '',
       renderCanvas: false
     }
 
@@ -35,8 +36,20 @@ class ComicCreateForm extends React.Component {
         this.setState({
           cloudinaryImageUrl: response.body.secure_url
         })
+        let scaledImageUrl = this.getScaledUrl(response.body.secure_url)
+        this.setState({
+          scaledImageUrl: scaledImageUrl
+        })
       }
     })
+  }
+
+  getScaledUrl(url){
+    let base = "http://res.cloudinary.com/dj1bsyieo/image/upload/"
+    let manipulation = "w_800,h_1100,c_fill/"
+    let splitUrl = url.split("/")
+    let file = splitUrl[splitUrl.length-1]
+    return base + manipulation + file
   }
 
   handleInputChange(e, property){
@@ -64,7 +77,7 @@ class ComicCreateForm extends React.Component {
           <input type="submit" value="Create Comic" />
         </form>
         {this.state.renderCanvas ?
-          (<Canvas image={this.state.cloudinaryImageUrl} text={this.state.text} title={this.state.title} onCreate={this.props.onCreate} />)
+          (<Canvas image={this.state.scaledImageUrl} text={this.state.text} title={this.state.title} onCreate={this.props.onCreate} />)
           : null }
 
       </div>

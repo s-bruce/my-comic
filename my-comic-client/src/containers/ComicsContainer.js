@@ -49,7 +49,6 @@ class ComicsContainer extends React.Component{
   }
 
   render(){
-    console.log("container state: ",this.state);
     return(
       <div>
         <Switch>

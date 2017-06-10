@@ -11,8 +11,7 @@ class Api::V1::ComicsController < ApplicationController
   end
 
   def create
-    comic = Comic.create({title: params[:title]})
-    Panel.create({comic_id: comic.id, text: params[:text], image_url: params[:image_url], canvas_url: params[:canvas_url]})
+    comic = Comic.create(comic_params)
     render json: comic
   end
 
@@ -28,8 +27,15 @@ class Api::V1::ComicsController < ApplicationController
 
   private
 
-  # def comic_params
-  #   params.require(:comic).permit(:title, :compressed_url)
-  # end
+  def comic_params
+    params.require(:comic).permit(
+      :title,
+      panels_attributes: [
+        :text,
+        :image_url,
+        :canvas_url
+      ]
+    )
+  end
 
 end

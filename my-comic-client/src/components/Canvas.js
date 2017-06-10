@@ -34,7 +34,7 @@ class Canvas extends React.Component {
 
   wrapAndRenderText() {
     this.state.context.fillStyle = "#000000"
-    this.state.context.font = "18px 'PatrickHand'"
+    this.state.context.font = "18px 'Patrick Hand SC'"
     let lineHeight = 25
     let x = 250
     let y = 60
@@ -69,10 +69,16 @@ class Canvas extends React.Component {
   handleCreateComic(){
     const dataURL = this.state.canvas.toDataURL()
     const comic = {
-      title: this.props.title,
-      text: this.props.text,
-      image_url: this.props.image,
-      canvas_url: dataURL
+      comic: {
+        title: this.props.title,
+        panels_attributes: {
+          '0': {
+            text: this.props.text,
+            image_url: this.props.image,
+            canvas_url: dataURL
+          }
+        }
+      }
     }
     this.props.onCreate(comic)
   }

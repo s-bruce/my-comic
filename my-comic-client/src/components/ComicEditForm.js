@@ -55,7 +55,18 @@ class ComicEditForm extends React.Component {
 
   handleSubmit(e){
     e.preventDefault()
+    this.setScaledUrl()
     this.setState({renderCanvas: true})
+  }
+
+  setScaledUrl(){
+    let base = "http://res.cloudinary.com/dj1bsyieo/image/upload/"
+    let manipulation = "w_800,h_1100,c_fill/"
+    let splitUrl = this.state.cloudinaryImageUrl.split("/")
+    let file = splitUrl[splitUrl.length-1]
+    this.setState({
+      scaledImageUrl: base + manipulation + file
+    })
   }
 
   render(){
@@ -81,7 +92,7 @@ class ComicEditForm extends React.Component {
         <img src={this.props.comic.panels[0].canvas_url} className="component-preview" />
         <h3>Canvas:</h3>
         {this.state.renderCanvas ?
-          (<Canvas image={this.state.cloudinaryImageUrl} id={this.props.comic.id} text={this.state.text} title={this.state.title} onUpdate={this.props.onUpdate} />)
+          (<Canvas image={this.state.scaledImageUrl} id={this.props.comic.id} text={this.state.text} title={this.state.title} onUpdate={this.props.onUpdate} />)
           : null }
       </div>
     )
