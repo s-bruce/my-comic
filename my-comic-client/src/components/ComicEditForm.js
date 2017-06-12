@@ -1,5 +1,6 @@
 import React from 'react'
 import request from 'superagent'
+import { Grid } from 'semantic-ui-react'
 
 import Canvas from './Canvas'
 
@@ -11,22 +12,35 @@ class ComicEditForm extends React.Component {
     super(props)
 
     this.state = {
+      id: props.comic.id,
       title: props.comic.title,
-      text: props.comic.panels[0].text,
-      cloudinaryImageUrl: props.comic.panels[0].image_url,
+      canvasUrl: props.comic.canvas_url,
+      panels: [
+        {
+          id: props.comic.panels[0].id,
+          text: props.comic.panels[0].text,
+          cloudinaryImageUrl: props.comic.panels[0].image_url,
+          scaledImageUrl: ''
+        }
+      ],
       renderCanvas: false
     }
 
     this.handleFileUpload = this.handleFileUpload.bind(this)
-    this.handleInputChange = this.handleInputChange.bind(this)
+    this.handleTitleChange = this.handleTitleChange.bind(this)
+    this.handleTextChange = this.handleTextChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   componentWillReceiveProps(props){
+    const panels = this.state.panels
+    panels[0].id = props.comic.panels[0].id
+    panels[0].text = props.comic.panels[0].text
+    panels[0].cloudinaryImageUrl = props.comic.panels[0].image_url
     this.setState({
+      id: props.comic.id,
       title: props.comic.title,
-      text: props.comic.panels[0].text,
-      cloudinaryImageUrl: props.comic.panels[0].image_url
+      panels: panels
     })
   }
 
@@ -40,16 +54,25 @@ class ComicEditForm extends React.Component {
         console.error(err)
       }
       if (response.body.secure_url !== '') {
+        const panels = this.state.panels
+        panels[0].cloudinaryImageUrl = response.body.secure_url
         this.setState({
-          cloudinaryImageUrl: response.body.secure_url
+          panels: panels
         })
       }
     })
   }
 
-  handleInputChange(e, property){
+  handleTitleChange(e){
+    this.setState({title: e.target.value})
+  }
+
+  handleTextChange(e){
+    const panels = this.state.panels
+    panels[0].text = e.target.value
+
     this.setState({
-      [property]: e.target.value
+      panels: panels
     })
   }
 
@@ -60,17 +83,18 @@ class ComicEditForm extends React.Component {
   }
 
   setScaledUrl(){
-    let base = "http://res.cloudinary.com/dj1bsyieo/image/upload/"
-    let manipulation = "w_800,h_1100,c_fill/"
-    let splitUrl = this.state.cloudinaryImageUrl.split("/")
-    let file = splitUrl[splitUrl.length-1]
+    const base = "http://res.cloudinary.com/dj1bsyieo/image/upload/"
+    const manipulation = "w_800,h_1100,c_fill/"
+    const splitUrl = this.state.panels[0].cloudinaryImageUrl.split("/")
+    const file = splitUrl[splitUrl.length-1]
+    const panels = this.state.panels
+    panels[0].scaledImageUrl = base + manipulation + file
     this.setState({
-      scaledImageUrl: base + manipulation + file
+      panels: panels
     })
   }
 
   render(){
-    console.log();
     if (!this.props.comic) {
       return null
     }
@@ -82,17 +106,16 @@ class ComicEditForm extends React.Component {
           <label>Choose a different image:</label><br/>
           <input type="file" onChange={this.handleFileUpload} /><br/><br/>
           <label>Edit Title:</label><br/>
-          <input type="text" value={this.state.title} onChange={(e)=> {this.handleInputChange(e, "title")}} /><br/><br/>
+          <input type="text" value={this.state.title} onChange={(e)=> {this.handleTitleChange(e)}} /><br/><br/>
           <label>Edit Text:</label><br/>
-          <textarea rows="4" cols="50" value={this.state.text} onChange={(e)=> {this.handleInputChange(e, "text")}} /><br/><br/>
+          <textarea rows="4" cols="50" value={this.state.panels[0].text} onChange={(e)=> {this.handleTextChange(e)}} /><br/><br/>
           <input type="submit" value="Edit Comic" />
         </form><br/><br/>
         <h3>Original Comic:</h3>
-        <h3>{this.props.comic.title}</h3>
-        <img src={this.props.comic.panels[0].canvas_url} className="component-preview" />
-        <h3>Canvas:</h3>
+        <img src={this.props.comic.canvas_url} className="component-preview" alt="" />
+
         {this.state.renderCanvas ?
-          (<Canvas image={this.state.scaledImageUrl} id={this.props.comic.id} text={this.state.text} title={this.state.title} onUpdate={this.props.onUpdate} />)
+          (<Canvas comic={this.state} onUpdate={this.props.onUpdate} />)
           : null }
       </div>
     )
@@ -101,8 +124,10 @@ class ComicEditForm extends React.Component {
 
 ComicEditForm.defaultProps = {
   comic: {
+    id: '',
     title: '',
-    panels: [{text: '', image_url: ''}]
+    canvasUrl: '',
+    panels: [{id: '', text: '', image_url: ''}]
   }
 }
 

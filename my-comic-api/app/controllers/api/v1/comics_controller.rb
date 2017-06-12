@@ -17,11 +17,7 @@ class Api::V1::ComicsController < ApplicationController
 
   def update
     comic = Comic.find(params[:id])
-    comic.update({title: params[:title]})
-
-    panel = Panel.find_by(comic_id: comic.id)
-    panel.update({text: params[:text], image_url: params[:image_url], canvas_url: params[:canvas_url]})
-
+    comic.update(comic_params)
     render json: comic
   end
 
@@ -30,10 +26,11 @@ class Api::V1::ComicsController < ApplicationController
   def comic_params
     params.require(:comic).permit(
       :title,
+      :canvas_url,
       panels_attributes: [
+        :id,
         :text,
-        :image_url,
-        :canvas_url
+        :image_url
       ]
     )
   end

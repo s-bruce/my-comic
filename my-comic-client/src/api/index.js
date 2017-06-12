@@ -14,8 +14,8 @@ export function createComic(comic){
   }).then(res => res.json())
 }
 
-export function updateComic(comic){
-  return fetch(`http://localhost:3000/api/v1/comics/${comic.id}`, {
+export function updateComic(id, comic){
+  return fetch(`http://localhost:3000/api/v1/comics/${id}`, {
     method: 'PATCH',
     headers: {
       'Accept': 'application/json',

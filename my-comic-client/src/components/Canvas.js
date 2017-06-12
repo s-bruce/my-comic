@@ -12,7 +12,9 @@ class Canvas extends React.Component {
     this.setState({canvas: this.refs.canvas})
     this.setState({context: this.refs.canvas.getContext('2d')})
     const img = this.refs.image
+    console.log("img: ", img);
     img.onload = () => {
+      console.log("img loaded");
       this.state.context.drawImage(img,0,0)
       this.wrapAndRenderText()
       this.renderRect()
@@ -34,13 +36,13 @@ class Canvas extends React.Component {
 
   wrapAndRenderText() {
     this.state.context.fillStyle = "#000000"
-    this.state.context.font = "18px 'Patrick Hand SC'"
+    this.state.context.font = "20px 'Patrick Hand SC'"
     let lineHeight = 25
     let x = 250
     let y = 60
     let rectHeight = 0
     let numOfLines = 1
-    let words = this.props.text.split(' ')
+    let words = this.props.comic.panels[0].text.split(' ')
     let line = ''
 
     for(let n = 0; n < words.length; n++) {
@@ -70,12 +72,12 @@ class Canvas extends React.Component {
     const dataURL = this.state.canvas.toDataURL()
     const comic = {
       comic: {
-        title: this.props.title,
+        title: this.props.comic.title,
+        canvas_url: dataURL,
         panels_attributes: {
           '0': {
-            text: this.props.text,
-            image_url: this.props.image,
-            canvas_url: dataURL
+            text: this.props.comic.panels[0].text,
+            image_url: this.props.comic.panels[0].cloudinaryImageUrl
           }
         }
       }
@@ -85,22 +87,29 @@ class Canvas extends React.Component {
 
   handleUpdateComic(){
     const dataURL = this.state.canvas.toDataURL()
+    const comicId = this.props.comic.id
     const comic = {
-      id: this.props.id,
-      title: this.props.title,
-      text: this.props.text,
-      image_url: this.props.image,
-      canvas_url: dataURL
+      comic: {
+        title: this.props.comic.title,
+        canvas_url: dataURL,
+        panels_attributes: {
+          '0': {
+            id: this.props.comic.panels[0].id,
+            text: this.props.comic.panels[0].text,
+            image_url: this.props.comic.panels[0].cloudinaryImageUrl
+          }
+        }
+      }
     }
-    this.props.onUpdate(comic)
+    this.props.onUpdate(comicId, comic)
   }
 
   render() {
     return (
       <div>
         <div>
-          <canvas ref="canvas" width={800} height={1100} style={{border: '1px solid #000000'}} />
-          <img ref="image" src={this.props.image} className="hidden-image" crossOrigin="Anonymous" />
+          <canvas ref="canvas" width={800} height={1100} />
+          <img ref="image" src={this.props.comic.panels[0].scaledImageUrl} className="hidden-image" alt="" crossOrigin="Anonymous" />
         </div>
       </div>
     )

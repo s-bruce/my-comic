@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { Grid, Button } from 'semantic-ui-react'
 
 function ComicShow(props){
   if (!props.comic){
@@ -7,11 +8,26 @@ function ComicShow(props){
   }
 
   return(
-    <div>
-      <h1>{props.comic.title}</h1>
-      <img src={props.comic.panels[0].canvas_url} /><br/>
-      <Link to={`/comics/${props.comic.id}/edit`}><button>Edit Comic</button></Link>
-    </div>
+    <Grid>
+      <Grid.Row centered>
+        <Grid.Column width={12} textAlign='center'>
+          <br/>
+          <h1 className="title-font">{props.comic.title}</h1>
+        </Grid.Column>
+      </Grid.Row>
+
+      <Grid.Row centered>
+        <Grid.Column width={12}>
+          <img src={props.comic.canvas_url} alt="" /><br/>
+        </Grid.Column>
+      </Grid.Row>
+      <Grid.Row centered>
+        <Grid.Column  width={12}>
+          <Link to={`/comics/${props.comic.id}/edit`}><Button content='Edit Comic' /></Link>
+        </Grid.Column>
+      </Grid.Row>
+    </Grid>
+
   )
 }
 
