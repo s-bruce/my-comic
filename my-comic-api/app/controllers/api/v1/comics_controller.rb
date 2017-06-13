@@ -1,4 +1,5 @@
 class Api::V1::ComicsController < ApplicationController
+  before_action :authorize_account!
 
   def index
     comics = Comic.all

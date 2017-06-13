@@ -10,12 +10,22 @@ class Canvas2 extends React.Component {
 
   componentDidMount() {
     const img1 = this.refs.image1
+    console.log("img1: ", img1);
     img1.onload = () => {
+      console.log("Image 1 loaded");
       this.drawCanvas1(img1)
+      const img2 = this.refs.image2
+      console.log("img2: ", img2);
+      img2.onload = () => {
+        console.log("image 2 loaded");
+        this.drawCanvas2(img2)
+        this.drawCanvasMaster()
+      }
     }
   }
 
   drawCanvas1(img){
+    console.log("got to drawCanvas1");
     this.setState({canvas1: this.refs.canvas1})
     this.setState({context1: this.refs.canvas1.getContext('2d')})
     this.state.context1.drawImage(img,0,0)
@@ -23,15 +33,10 @@ class Canvas2 extends React.Component {
     this.wrapAndRenderText(this.state.context1, text1)
     this.renderRect(this.state.context1)
     this.wrapAndRenderText(this.state.context1, text1)
-
-    const img2 = this.refs.image2
-    img2.onload = () => {
-      this.drawCanvas2(img2)
-    }
-
   }
 
   drawCanvas2(img){
+    console.log("got to drawCanvas2");
     this.setState({canvas2: this.refs.canvas2})
     this.setState({context2: this.refs.canvas2.getContext('2d')})
     this.setState({rectWidth: 300})
@@ -40,16 +45,15 @@ class Canvas2 extends React.Component {
     this.wrapAndRenderText(this.state.context2, text2)
     this.renderRect(this.state.context2)
     this.wrapAndRenderText(this.state.context2, text2)
-
-    this.drawCanvasMaster()
   }
 
   drawCanvasMaster(){
+    console.log("got to drawCanvasMaster");
     this.setState({canvasMaster: this.refs.canvasMaster})
     this.setState({contextMaster: this.refs.canvasMaster.getContext('2d')})
     this.state.contextMaster.drawImage(this.state.canvas1,0,0)
     this.state.contextMaster.drawImage(this.state.canvas2,0,550)
-
+    console.log("done drawing");
     if(this.props.onCreate){
       this.handleCreateComic()
     } else if(this.props.onUpdate){
@@ -120,22 +124,27 @@ class Canvas2 extends React.Component {
   }
 
   handleUpdateComic(){
-    // const dataURL = this.state.canvas.toDataURL()
-    // const comicId = this.props.id
-    // const comic = {
-    //   comic: {
-    //     title: this.props.title,
-    //     panels_attributes: {
-    //       '0': {
-    //         id: this.props.panel_id,
-    //         text: this.props.text,
-    //         image_url: this.props.image,
-    //         canvas_url: dataURL
-    //       }
-    //     }
-    //   }
-    // }
-    // this.props.onUpdate(comicId, comic)
+    const dataURL = this.state.canvasMaster.toDataURL()
+    const comicId = this.props.comic.id
+    const comic = {
+      comic: {
+        title: this.props.comic.title,
+        canvas_url: dataURL,
+        panels_attributes: {
+          '0': {
+            id: this.props.comic.panels[0].id,
+            text: this.props.comic.panels[0].text,
+            image_url: this.props.comic.panels[0].cloudinaryImageUrl
+          },
+          '1': {
+            id: this.props.comic.panels[1].id,
+            text: this.props.comic.panels[1].text,
+            image_url: this.props.comic.panels[1].cloudinaryImageUrl
+          }
+        }
+      }
+    }
+    this.props.onUpdate(comicId, comic)
   }
 
   render() {

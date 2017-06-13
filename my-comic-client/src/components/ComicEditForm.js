@@ -3,6 +3,7 @@ import request from 'superagent'
 import { Grid } from 'semantic-ui-react'
 
 import Canvas from './Canvas'
+import Canvas2 from './Canvas2'
 
 const CLOUDINARY_UPLOAD_PRESET = 'azp6zqy3'
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/dj1bsyieo/image/upload'
@@ -11,19 +12,21 @@ class ComicEditForm extends React.Component {
   constructor(props){
     super(props)
 
+    const panels = props.comic.panels.map(panel => {
+      return {
+        id: panel.id,
+        text: panel.text,
+        cloudinaryImageUrl: panel.image_url,
+        scaledImageUrl: ''
+      }
+    })
+
     this.state = {
       id: props.comic.id,
       title: props.comic.title,
       canvasUrl: props.comic.canvas_url,
-      panels: [
-        {
-          id: props.comic.panels[0].id,
-          text: props.comic.panels[0].text,
-          cloudinaryImageUrl: props.comic.panels[0].image_url,
-          scaledImageUrl: ''
-        }
-      ],
-      renderCanvas: false
+      panels: panels,
+      renderCanvas: ''
     }
 
     this.handleFileUpload = this.handleFileUpload.bind(this)
@@ -33,18 +36,24 @@ class ComicEditForm extends React.Component {
   }
 
   componentWillReceiveProps(props){
-    const panels = this.state.panels
-    panels[0].id = props.comic.panels[0].id
-    panels[0].text = props.comic.panels[0].text
-    panels[0].cloudinaryImageUrl = props.comic.panels[0].image_url
+    const panels = props.comic.panels.map(panel =>  {
+      return {
+        id: panel.id,
+        text: panel.text,
+        cloudinaryImageUrl: panel.image_url,
+        scaledImageUrl: ''
+      }
+    })
+
     this.setState({
       id: props.comic.id,
       title: props.comic.title,
+      canvasUrl: props.comic.canvas_url,
       panels: panels
     })
   }
 
-  handleFileUpload(e){
+  handleFileUpload(e, index){
     const file = e.target.files[0]
     const upload = request.post(CLOUDINARY_UPLOAD_URL)
                         .field('upload_preset', CLOUDINARY_UPLOAD_PRESET)
@@ -55,7 +64,7 @@ class ComicEditForm extends React.Component {
       }
       if (response.body.secure_url !== '') {
         const panels = this.state.panels
-        panels[0].cloudinaryImageUrl = response.body.secure_url
+        panels[index].cloudinaryImageUrl = response.body.secure_url
         this.setState({
           panels: panels
         })
@@ -67,9 +76,9 @@ class ComicEditForm extends React.Component {
     this.setState({title: e.target.value})
   }
 
-  handleTextChange(e){
+  handleTextChange(e, index){
     const panels = this.state.panels
-    panels[0].text = e.target.value
+    panels[index].text = e.target.value
 
     this.setState({
       panels: panels
@@ -79,16 +88,36 @@ class ComicEditForm extends React.Component {
   handleSubmit(e){
     e.preventDefault()
     this.setScaledUrl()
-    this.setState({renderCanvas: true})
+    console.log("done");
+    switch (this.state.panels.length) {
+      case 1:
+        this.setState({renderCanvas: "one panel"})
+        break
+      case 2:
+        this.setState({renderCanvas: "two panel"})
+        break
+    }
   }
 
   setScaledUrl(){
     const base = "http://res.cloudinary.com/dj1bsyieo/image/upload/"
-    const manipulation = "w_800,h_1100,c_fill/"
-    const splitUrl = this.state.panels[0].cloudinaryImageUrl.split("/")
-    const file = splitUrl[splitUrl.length-1]
+    let manipulation = ""
+    switch (this.state.panels.length) {
+      case 1:
+        manipulation = "w_800,h_1100,c_fill/"
+        break
+      case 2:
+        manipulation = "w_800,h_550,c_fill/"
+        break
+    }
+    let splitUrl = ""
+    let file = ""
     const panels = this.state.panels
-    panels[0].scaledImageUrl = base + manipulation + file
+    panels.forEach((panel, index) => {
+      splitUrl = panel.cloudinaryImageUrl.split("/")
+      file = splitUrl[splitUrl.length-1]
+      panel.scaledImageUrl = base + manipulation + file
+    })
     this.setState({
       panels: panels
     })
@@ -103,20 +132,38 @@ class ComicEditForm extends React.Component {
       <div>
         <h1>Edit {this.props.comic.title}</h1>
         <form onSubmit={this.handleSubmit}>
-          <label>Choose a different image:</label><br/>
-          <input type="file" onChange={this.handleFileUpload} /><br/><br/>
           <label>Edit Title:</label><br/>
           <input type="text" value={this.state.title} onChange={(e)=> {this.handleTitleChange(e)}} /><br/><br/>
+
+          {(this.state.panels.length > 1) ? <h3>Panel 1:</h3> : null}
+          <label>Choose a different image:</label><br/>
+          <input type="file" onChange={(e)=> {this.handleFileUpload(e, 0)}} /><br/><br/>
           <label>Edit Text:</label><br/>
-          <textarea rows="4" cols="50" value={this.state.panels[0].text} onChange={(e)=> {this.handleTextChange(e)}} /><br/><br/>
+          <textarea rows="4" cols="50" value={this.state.panels[0].text} onChange={(e)=> {this.handleTextChange(e, 0)}} /><br/><br/>
+
+          {this.state.panels.length > 1 &&
+            <span>
+              <h3>Panel 2:</h3>
+              <label>Choose a different image:</label><br/>
+              <input type="file" onChange={(e)=> {this.handleFileUpload(e, 1)}} /><br/><br/>
+              <label>Edit Text:</label><br/>
+              <textarea rows="4" cols="50" value={this.state.panels[1].text} onChange={(e)=> {this.handleTextChange(e, 1)}} /><br/><br/>
+            </span>
+          }
+
           <input type="submit" value="Edit Comic" />
         </form><br/><br/>
         <h3>Original Comic:</h3>
         <img src={this.props.comic.canvas_url} className="component-preview" alt="" />
 
-        {this.state.renderCanvas ?
+        {this.state.renderCanvas === "one panel" ?
           (<Canvas comic={this.state} onUpdate={this.props.onUpdate} />)
-          : null }
+          : null
+        }
+        {this.state.renderCanvas === "two panel" ?
+          (<Canvas2 comic={this.state} onUpdate={this.props.onUpdate} />)
+          : null
+        }
       </div>
     )
   }

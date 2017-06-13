@@ -27,8 +27,7 @@ class ComicsContainer extends React.Component{
   handleCreateComic(comic){
     createComic(comic)
     .then(com => {
-      this.setState(prevState => ({ comics: [...prevState.comics, com]}))
-      this.props.history.push(`/comics/${com.id}`)
+      this.setState((prevState => ({ comics: [...prevState.comics, com]})), ()=> this.props.history.push(`/comics/${com.id}`))
     })
   }
 

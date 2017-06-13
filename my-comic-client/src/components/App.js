@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom'
 import { Container } from 'semantic-ui-react'
 
 import Navbar from './Navbar'
+import LoginForm from './LoginForm'
 import ComicsContainer from '../containers/ComicsContainer'
 
 class App extends React.Component {
@@ -11,6 +12,7 @@ class App extends React.Component {
       <Container>
         <Navbar />
         <Switch>
+          <Route path="/login" component={LoginForm} />
           <Route path="/comics" component={ComicsContainer} />
         </Switch>
       </Container>
