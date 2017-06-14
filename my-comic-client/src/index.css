@@ -15,3 +15,8 @@ body {
 .hidden-image {
   display: none;
 }
+
+@font-face {
+  font-family: "RoofRunners";
+  src: url("fonts/roof.runners.ttf");
+}

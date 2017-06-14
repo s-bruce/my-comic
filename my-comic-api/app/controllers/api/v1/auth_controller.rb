@@ -6,6 +6,7 @@ class Api::V1::AuthController < ApplicationController
       token = JWT.encode({account_id: account.id}, ENV['JWT_SECRET'], ENV['JWT_ALGORITHM'])
       render json: {
         account: {
+          id: account.id,
           username: account.username
         },
         token: token
@@ -13,5 +14,10 @@ class Api::V1::AuthController < ApplicationController
     else
       render json: {error: 'No account or password found'}
     end
+  end
+
+  def show
+    account = current_account
+    render json: account
   end
 end

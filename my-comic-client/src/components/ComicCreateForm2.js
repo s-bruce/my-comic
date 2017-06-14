@@ -1,5 +1,6 @@
 import React from 'react'
 import request from 'superagent'
+import { Button, Form } from 'semantic-ui-react'
 
 import Canvas2 from './Canvas2'
 
@@ -80,17 +81,29 @@ class ComicCreateForm2 extends React.Component {
   }
 
   render(){
+    console.log(this.state);
     return(
       <div>
         <h2>Create A Two-Panel Comic</h2>
-        <form onSubmit={this.handleSubmit}>
-          <h3>Comic Title:</h3>
-          <input type="text" value={this.state.title} onChange={(e)=> {this.handleTitleChange(e)}} />
+        <Form onSubmit={this.handleSubmit}>
+          <Form.Input type='text' label='Comic Title' placeholder='Comic Title' value={this.state.title} onChange={(e)=> {this.handleTitleChange(e)}} />
 
-          <h3>Panel 1:</h3>
-          <label>Choose your image file:</label><br/>
-          <input type="file" onChange={(e)=> {this.handleFileUpload(e, 0)}} /><br/><br/>
-          <label>Comic Text:</label><br/>
+          <Form.Input type='file' label='Panel One Image' onChange={(e)=> {this.handleFileUpload(e, 0)}} />
+          <Form.TextArea rows='3' label='Panel One Text' placeholder='Panel One Text' value={this.state.panels[0].text} onChange={(e)=> {this.handleTextChange(e, 0)}} />
+
+          <Form.Input type='file' label='Panel Two Image' onChange={(e)=> {this.handleFileUpload(e, 1)}} />
+          <Form.TextArea rows='3' label='Panel Two Text' placeholder='Panel Two Text' value={this.state.panels[1].text} onChange={(e)=> {this.handleTextChange(e, 1)}} />
+
+          <Form.Button type='submit' content='Create Comic' color='blue' />
+        </Form>
+        <form onSubmit={this.handleSubmit}>
+          {/* <h3>Comic Title:</h3> */}
+          {/* <input type="text" value={this.state.title} onChange={(e)=> {this.handleTitleChange(e)}} /> */}
+
+          {/* <h4>Panel 1:</h4>
+          <label>Choose your image file:</label><br/> */}
+          {/* <input type="file" onChange={(e)=> {this.handleFileUpload(e, 0)}} /><br/><br/> */}
+          {/* <label>Comic Text:</label><br/>
           <textarea rows="4" cols="50" value={this.state.panels[0].text} onChange={(e)=> {this.handleTextChange(e, 0)}} /><br/>
 
           <h3>Panel 2:</h3>
@@ -99,10 +112,10 @@ class ComicCreateForm2 extends React.Component {
           <label>Comic Text:</label><br/>
           <textarea rows="4" cols="50" value={this.state.panels[1].text} onChange={(e)=> {this.handleTextChange(e, 1)}} /><br/><br/>
 
-          <input type="submit" value="Create Comic" />
+          <input type="submit" value="Create Comic" /> */}
         </form>
         {this.state.renderCanvas ?
-          (<Canvas2 comic={this.state} onCreate={this.props.onCreate} />)
+          (<Canvas2 comic={this.state} user={this.props.user} onCreate={this.props.onCreate} />)
           : null }
 
       </div>

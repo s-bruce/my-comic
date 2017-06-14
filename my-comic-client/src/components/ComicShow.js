@@ -23,7 +23,7 @@ function ComicShow(props){
       </Grid.Row>
       <Grid.Row centered>
         <Grid.Column  width={12}>
-          <Link to={`/comics/${props.comic.id}/edit`}><Button content='Edit Comic' /></Link>
+          <Link to={`/comics/${props.comic.id}/edit`}><Button content='Edit Comic' color='blue' /></Link>
         </Grid.Column>
       </Grid.Row>
     </Grid>

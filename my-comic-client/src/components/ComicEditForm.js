@@ -25,6 +25,7 @@ class ComicEditForm extends React.Component {
       id: props.comic.id,
       title: props.comic.title,
       canvasUrl: props.comic.canvas_url,
+      account_id: props.comic.account_id,
       panels: panels,
       renderCanvas: ''
     }
@@ -49,6 +50,7 @@ class ComicEditForm extends React.Component {
       id: props.comic.id,
       title: props.comic.title,
       canvasUrl: props.comic.canvas_url,
+      account_id: props.comic.account_id,
       panels: panels
     })
   }
@@ -174,6 +176,7 @@ ComicEditForm.defaultProps = {
     id: '',
     title: '',
     canvasUrl: '',
+    account_id: '',
     panels: [{id: '', text: '', image_url: ''}]
   }
 }

@@ -1,5 +1,6 @@
 import React from 'react'
 import request from 'superagent'
+import { Button, Form } from 'semantic-ui-react'
 
 import Canvas from './Canvas'
 
@@ -78,17 +79,15 @@ class ComicCreateForm extends React.Component {
     return(
       <div>
         <h2>Create A One-Panel Comic</h2>
-        <form onSubmit={this.handleSubmit}>
-          <label>Comic Title:</label><br/>
-          <input type="text" value={this.state.title} onChange={(e)=> {this.handleTitleChange(e)}} /><br/><br/>
-          <label>Choose your image file:</label><br/>
-          <input type="file" onChange={this.handleFileUpload} /><br/><br/>
-          <label>Comic Text:</label><br/>
-          <textarea rows="4" cols="50" value={this.state.panels[0].text} onChange={(e)=> {this.handleTextChange(e)}} /><br/><br/>
-          <input type="submit" value="Create Comic" />
-        </form>
+        <Form onSubmit={this.handleSubmit}>
+          <Form.Input type='text' label='Comic Title' placeholder='Comic Title' value={this.state.title} onChange={(e)=> {this.handleTitleChange(e)}} />
+          <Form.Input type='file' label='Image' placeholder='Image' onChange={this.handleFileUpload} />
+          <Form.TextArea rows='3' label='Text' placeholder='Text' value={this.state.panels[0].text} onChange={(e)=> {this.handleTextChange(e)}} />
+          <Form.Button type='submit' content='Create Comic' color='blue' />
+        </Form>
+
         {this.state.renderCanvas ?
-          (<Canvas comic={this.state} onCreate={this.props.onCreate} />)
+          (<Canvas comic={this.state} user={this.props.user} onCreate={this.props.onCreate} />)
           : null }
 
       </div>

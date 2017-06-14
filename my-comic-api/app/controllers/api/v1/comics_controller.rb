@@ -22,12 +22,19 @@ class Api::V1::ComicsController < ApplicationController
     render json: comic
   end
 
+  def user_comics
+    user = Account.find(params[:id])
+    comics = user.comics
+    render json: comics
+  end
+
   private
 
   def comic_params
     params.require(:comic).permit(
       :title,
       :canvas_url,
+      :account_id,
       panels_attributes: [
         :id,
         :text,
