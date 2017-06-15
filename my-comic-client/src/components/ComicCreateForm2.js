@@ -1,8 +1,10 @@
 import React from 'react'
 import request from 'superagent'
+import { withRouter } from 'react-router-dom'
 import { Button, Form } from 'semantic-ui-react'
 
 import Canvas2 from './Canvas2'
+import MasterCanvas from './MasterCanvas'
 
 const CLOUDINARY_UPLOAD_PRESET = 'azp6zqy3'
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/dj1bsyieo/image/upload'
@@ -12,26 +14,34 @@ class ComicCreateForm2 extends React.Component {
     super()
 
     this.state = {
-      title: '',
-      panels: [
-        {
-          text: '',
-          cloudinaryImageUrl: '',
-          scaledImageUrl: ''
-        },
-        {
-          text: '',
-          cloudinaryImageUrl: '',
-          scaledImageUrl: ''
-        }
-      ],
-      renderCanvas: false
+      comic: {
+        panels: [
+          {
+            text: '',
+            image_url: '',
+            scaledImageUrl: ''
+          },
+          {
+            text: '',
+            image_url: '',
+            scaledImageUrl: ''
+          }
+        ]
+      },
+      renderCanvas1: false,
+      renderCanvas2: false,
+      comicCreated: false,
+      renderNewInstance: false
     }
 
     this.handleFileUpload = this.handleFileUpload.bind(this)
-    this.handleTitleChange = this.handleTitleChange.bind(this)
     this.handleTextChange = this.handleTextChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleCreatePanelOne = this.handleCreatePanelOne.bind(this)
+    this.handleCreatePanelTwo = this.handleCreatePanelTwo.bind(this)
+    this.handleCreateComic = this.handleCreateComic.bind(this)
+    this.handleMergePanels = this.handleMergePanels.bind(this)
+    this.handleRenderAnotherForm = this.handleRenderAnotherForm.bind(this)
   }
 
   handleFileUpload(e, index){
@@ -44,11 +54,11 @@ class ComicCreateForm2 extends React.Component {
         console.error(err)
       }
       if (response.body.secure_url !== '') {
-        const panels = this.state.panels
-        panels[index].cloudinaryImageUrl = response.body.secure_url
+        const panels = this.state.comic.panels
+        panels[index].image_url = response.body.secure_url
         panels[index].scaledImageUrl = this.getScaledUrl(response.body.secure_url)
         this.setState({
-          panels: panels
+          comic: {panels}
         })
       }
     })
@@ -62,65 +72,110 @@ class ComicCreateForm2 extends React.Component {
     return base + manipulation + file
   }
 
-  handleTitleChange(e){
-    this.setState({title: e.target.value})
-  }
-
   handleTextChange(e, index){
-    const panels = this.state.panels
+    const panels = this.state.comic.panels
     panels[index].text = e.target.value
 
     this.setState({
-      panels: panels
+      comic: {panels}
     })
   }
 
-  handleSubmit(e){
+  handleSubmit(e, prop){
     e.preventDefault()
-    this.setState({renderCanvas: true})
+    this.setState({[prop]: true})
+  }
+
+  handleCreatePanelOne(dataURL){
+    this.setState({canvas1: dataURL})
+  }
+
+  handleCreatePanelTwo(dataURL){
+    this.setState({canvas2: dataURL})
+  }
+
+  handleMergePanels(){
+    this.setState({renderMasterCanvas: true})
+  }
+
+  handleCreateComic(dataURL){
+    const comic = {
+      comic: {
+        canvas_url: dataURL,
+        panels_attributes: {
+          '0': {
+            text: this.state.comic.panels[0].text,
+            image_url: this.state.comic.panels[0].image_url
+          },
+          '1': {
+            text: this.state.comic.panels[1].text,
+            image_url: this.state.comic.panels[1].image_url
+          }
+        }
+      }
+    }
+    this.props.onCreateComic(comic)
+    this.setState({comicCreated: true})
+  }
+
+  handleRenderAnotherForm(numOfPanels){
+    if (numOfPanels === 2){
+      this.setState({renderNewInstance: true})
+    } else {
+      this.props.history.push('/comics/new/1')
+    }
   }
 
   render(){
-    console.log(this.state);
     return(
       <div>
-        <h2>Create A Two-Panel Comic</h2>
-        <Form onSubmit={this.handleSubmit}>
-          <Form.Input type='text' label='Comic Title' placeholder='Comic Title' value={this.state.title} onChange={(e)=> {this.handleTitleChange(e)}} />
+        {this.state.renderNewInstance ?
+          (<ComicCreateForm2 onCreateComic={this.props.onCreateComic} />)
+          : (
+            <div>
+              <h2>Create A Two-Panel Page</h2>
+              <Form onSubmit={(e)=> {this.handleSubmit(e, 'renderCanvas1')}}>
+                <Form.Input type='file' label='Panel One Image' onChange={(e)=> {this.handleFileUpload(e, 0)}} />
+                <Form.TextArea rows='3' label='Panel One Text' placeholder='Panel One Text' value={this.state.comic.panels[0].text} onChange={(e)=> {this.handleTextChange(e, 0)}} />
+                <Form.Button type='submit' content='Create Panel One' color='blue' />
+              </Form><br/>
 
-          <Form.Input type='file' label='Panel One Image' onChange={(e)=> {this.handleFileUpload(e, 0)}} />
-          <Form.TextArea rows='3' label='Panel One Text' placeholder='Panel One Text' value={this.state.panels[0].text} onChange={(e)=> {this.handleTextChange(e, 0)}} />
+              <Form onSubmit={(e)=> {this.handleSubmit(e, 'renderCanvas2')}}>
+                <Form.Input type='file' label='Panel Two Image' onChange={(e)=> {this.handleFileUpload(e, 1)}} />
+                <Form.TextArea rows='3' label='Panel Two Text' placeholder='Panel Two Text' value={this.state.comic.panels[1].text} onChange={(e)=> {this.handleTextChange(e, 1)}} />
+                <Form.Button type='submit' content='Create Panel Two' color='blue' />
+              </Form>
 
-          <Form.Input type='file' label='Panel Two Image' onChange={(e)=> {this.handleFileUpload(e, 1)}} />
-          <Form.TextArea rows='3' label='Panel Two Text' placeholder='Panel Two Text' value={this.state.panels[1].text} onChange={(e)=> {this.handleTextChange(e, 1)}} />
+              {this.state.renderCanvas1 ?
+                (<Canvas2 panel={this.state.comic.panels[0]} createPanel={this.handleCreatePanelOne} />)
+                : null }
 
-          <Form.Button type='submit' content='Create Comic' color='blue' />
-        </Form>
-        <form onSubmit={this.handleSubmit}>
-          {/* <h3>Comic Title:</h3> */}
-          {/* <input type="text" value={this.state.title} onChange={(e)=> {this.handleTitleChange(e)}} /> */}
+              {this.state.renderCanvas2 ?
+                (<Canvas2 panel={this.state.comic.panels[1]} createPanel={this.handleCreatePanelTwo} />)
+                : null }
 
-          {/* <h4>Panel 1:</h4>
-          <label>Choose your image file:</label><br/> */}
-          {/* <input type="file" onChange={(e)=> {this.handleFileUpload(e, 0)}} /><br/><br/> */}
-          {/* <label>Comic Text:</label><br/>
-          <textarea rows="4" cols="50" value={this.state.panels[0].text} onChange={(e)=> {this.handleTextChange(e, 0)}} /><br/>
+              {this.state.renderCanvas2 ?
+                <Button content='Create Page' color='blue' onClick={this.handleMergePanels} />
+                : null }
 
-          <h3>Panel 2:</h3>
-          <label>Choose your image file:</label><br/>
-          <input type="file" onChange={(e)=> {this.handleFileUpload(e, 1)}} /><br/><br/>
-          <label>Comic Text:</label><br/>
-          <textarea rows="4" cols="50" value={this.state.panels[1].text} onChange={(e)=> {this.handleTextChange(e, 1)}} /><br/><br/>
+              {this.state.renderMasterCanvas ?
+                (<MasterCanvas canvas1={this.state.canvas1} canvas2={this.state.canvas2} createComic={this.handleCreateComic} />)
+                : null }
 
-          <input type="submit" value="Create Comic" /> */}
-        </form>
-        {this.state.renderCanvas ?
-          (<Canvas2 comic={this.state} user={this.props.user} onCreate={this.props.onCreate} />)
-          : null }
-
+              {this.state.comicCreated ? (
+                <div>
+                  <h3>What do you want to do next?</h3>
+                  <Button basic content='Create a one-panel page' color='blue' onClick={()=> {this.handleRenderAnotherForm(1)}} />
+                  <Button basic content='Create a two-panel page' color='blue' onClick={()=> {this.handleRenderAnotherForm(2)}} />
+                  <Button content="I'm finished! Show me my comic book" color='blue' floated='right' />
+                </div>
+                )
+                : null }
+            </div>
+          )}
       </div>
     )
   }
 }
 
-export default ComicCreateForm2
+export default withRouter(ComicCreateForm2) 

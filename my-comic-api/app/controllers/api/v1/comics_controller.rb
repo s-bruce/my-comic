@@ -22,12 +22,6 @@ class Api::V1::ComicsController < ApplicationController
     render json: comic
   end
 
-  def user_comics
-    user = Account.find(params[:id])
-    comics = user.comics
-    render json: comics
-  end
-
   private
 
   def comic_params

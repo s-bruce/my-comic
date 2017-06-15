@@ -90,7 +90,6 @@ class ComicEditForm extends React.Component {
   handleSubmit(e){
     e.preventDefault()
     this.setScaledUrl()
-    console.log("done");
     switch (this.state.panels.length) {
       case 1:
         this.setState({renderCanvas: "one panel"})

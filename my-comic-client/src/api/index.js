@@ -30,7 +30,7 @@ export function fetchCurrentUser(){
 }
 
 export function fetchComics(){
-  return fetch("http://localhost:3000/api/v1/comics", {
+  return fetch("http://localhost:3000/api/v1/comic_books", {
     headers: {
       'Authorization': localStorage.getItem('jwt')
     }
@@ -47,8 +47,8 @@ export function fetchUserComics(id){
     .then(res => res.json())
 }
 
-export function createComic(comic){
-  return fetch("http://localhost:3000/api/v1/comics", {
+export function createComicBook(comic){
+  return fetch("http://localhost:3000/api/v1/comic_books", {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ export function createComic(comic){
 }
 
 export function updateComic(id, comic){
-  return fetch(`http://localhost:3000/api/v1/comics/${id}`, {
+  return fetch(`http://localhost:3000/api/v1/comic_books/${id}`, {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',

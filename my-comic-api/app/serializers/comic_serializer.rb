@@ -1,4 +1,4 @@
 class ComicSerializer < ActiveModel::Serializer
-  attributes :id, :title, :canvas_url, :account_id
+  attributes :id, :canvas_url, :comic_book_id
   has_many :panels
 end

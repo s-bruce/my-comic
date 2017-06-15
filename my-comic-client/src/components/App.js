@@ -85,6 +85,7 @@ class App extends React.Component {
           }} />
           <Route path="/comics" render={() => <AuthedComicsContainer user={this.state.currentUser} />} />
         </Switch>
+        <span className="comic-font"></span>
       </Container>
     )
   }

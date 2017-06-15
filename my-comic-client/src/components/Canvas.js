@@ -12,15 +12,13 @@ class Canvas extends React.Component {
     this.setState({canvas: this.refs.canvas})
     this.setState({context: this.refs.canvas.getContext('2d')})
     const img = this.refs.image
-    console.log("img: ", img);
     img.onload = () => {
-      console.log("img loaded");
       this.state.context.drawImage(img,0,0)
       this.wrapAndRenderText()
       this.renderRect()
       this.wrapAndRenderText()
-      if(this.props.onCreate){
-        this.handleCreateComic()
+      if(this.props.createComic){
+        this.handleCreateCanvas()
       } else if(this.props.onUpdate){
         this.handleUpdateComic()
       }
@@ -68,22 +66,22 @@ class Canvas extends React.Component {
     }
   }
 
-  handleCreateComic(){
+  handleCreateCanvas(){
     const dataURL = this.state.canvas.toDataURL()
-    const comic = {
-      comic: {
-        title: this.props.comic.title,
-        canvas_url: dataURL,
-        account_id: this.props.user.id,
-        panels_attributes: {
-          '0': {
-            text: this.props.comic.panels[0].text,
-            image_url: this.props.comic.panels[0].cloudinaryImageUrl
-          }
-        }
-      }
-    }
-    this.props.onCreate(comic)
+    // const comic = {
+    //   comic: {
+    //     title: this.props.comic.title,
+    //     canvas_url: dataURL,
+    //     account_id: this.props.user.id,
+    //     panels_attributes: {
+    //       '0': {
+    //         text: this.props.comic.panels[0].text,
+    //         image_url: this.props.comic.panels[0].cloudinaryImageUrl
+    //       }
+    //     }
+    //   }
+    // }
+    this.props.createComic(dataURL)
   }
 
   handleUpdateComic(){
@@ -111,7 +109,7 @@ class Canvas extends React.Component {
       <div>
         <div>
           <canvas ref="canvas" width={800} height={1100} />
-          <img ref="image" src={this.props.comic.panels[0].scaledImageUrl} className="hidden-image" alt="" crossOrigin="Anonymous" />
+          <img ref="image" src={this.props.scaledImageUrl} className="hidden-image" alt="" crossOrigin="Anonymous" />
         </div>
       </div>
     )

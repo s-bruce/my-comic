@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170613185811) do
+ActiveRecord::Schema.define(version: 20170615145622) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,12 +22,18 @@ ActiveRecord::Schema.define(version: 20170613185811) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "comics", force: :cascade do |t|
+  create_table "comic_books", force: :cascade do |t|
+    t.integer "account_id"
     t.string "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "comics", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.text "canvas_url"
-    t.integer "account_id"
+    t.integer "comic_book_id"
   end
 
   create_table "panels", force: :cascade do |t|

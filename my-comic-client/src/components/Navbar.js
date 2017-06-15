@@ -10,16 +10,13 @@ class Navbar extends Component {
   render() {
     const { activeItem } = this.state
 
-    console.log("logged in: ",this.props.loggedIn);
-
     return (
       <div>
         {this.props.loggedIn ? (
           <Menu header>
             <Menu.Item header>My Comic</Menu.Item>
             <Link to={`/comics`}><Menu.Item name='comics' active={activeItem === 'comics'} content='My Comics' onClick={this.handleItemClick} /></Link>
-            <Link to={`/comics/new`}><Menu.Item name='new' active={activeItem === 'new'} content='Create One-Panel Comic' onClick={this.handleItemClick} /></Link>
-            <Link to={`/comics/new/2`}><Menu.Item name='new2' active={activeItem === 'new2'} content='Create Two-Panel Comic' onClick={this.handleItemClick} /></Link>
+            <Link to={`/comics/new`}><Menu.Item name='new' active={activeItem === 'new'} content='Create A Comic' onClick={this.handleItemClick} /></Link>
             <Link to={`/logout`}><Menu.Item name='logout' active={activeItem === 'logout'} content='Log Out' onClick={this.handleItemClick} /></Link>
           </Menu>
         ) : (

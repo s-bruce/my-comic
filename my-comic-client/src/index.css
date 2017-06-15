@@ -12,6 +12,10 @@ body {
   font-family: 'Anton', sans-serif;
 }
 
+.comic-font {
+  font-family: 'RoofRunners', sans-serif;
+}
+
 .hidden-image {
   display: none;
 }
