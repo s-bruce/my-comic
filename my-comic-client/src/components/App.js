@@ -39,11 +39,11 @@ class App extends React.Component {
     }
   }
 
-  handleLogin(params){
+  handleLogin(params, handleIncorrectLogin){
     logIn(params)
     .then(res => {
       if (res.error){
-        alert("Incorrect username or password.")
+        handleIncorrectLogin()
       } else {
         localStorage.setItem('jwt', res.token)
         this.setState({ loggedIn: true })
@@ -53,15 +53,13 @@ class App extends React.Component {
     })
   }
 
-  handleSignup(params){
+  handleSignup(params, handleUsernameExists, handleAccountCreated){
     signUp(params)
     .then(res => {
       if (res.error){
-        alert("That username already exists. Please try a different username.")
-        this.props.history.push('/signup')
+        handleUsernameExists()
       } else {
-        alert("Your account was successfully created! Please log in.")
-        this.props.history.push('/login')
+        handleAccountCreated()
       }
     })
   }
