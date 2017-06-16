@@ -120,8 +120,8 @@ class ComicCreateForm1 extends React.Component {
           <div>
             <h2>Create A One-Panel Page</h2>
             <Form onSubmit={this.handleSubmit}>
-              <Form.Input type='file' label='Image' onChange={this.handleFileUpload} />
-              <Form.TextArea rows='3' label='Text' placeholder='Text' value={this.state.comic.panels[0].text} onChange={(e)=> {this.handleTextChange(e)}} />
+              <Form.Input type='file' label='Image' required onChange={this.handleFileUpload} />
+              <Form.TextArea rows='3' label='Text' placeholder='Text' value={this.state.comic.panels[0].text} required onChange={(e)=> {this.handleTextChange(e)}} />
               <Form.Button type='submit' content='Create Page' color='blue' />
             </Form>
 

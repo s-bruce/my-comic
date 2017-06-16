@@ -39,7 +39,7 @@ class FormWelcome extends React.Component {
         <h2>Create A Comic!</h2>
         <Form onSubmit={this.handleSubmit}>
           <h3>What is your comic's title?</h3>
-          <Form.Input type='text' placeholder='Comic title' value={this.state.title} onChange={this.handleTitleChange} />
+          <Form.Input type='text' placeholder='Comic title' value={this.state.title} required onChange={this.handleTitleChange} />
           <Form.Group inline>
             <label>How many panels will your first page have?</label>
             <Form.Radio label='one' value='one' checked={this.state.firstPage === 'one'} onChange={this.handleRadioChange} />
