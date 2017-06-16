@@ -4,7 +4,7 @@ import { Switch, Route, withRouter } from 'react-router-dom'
 import { fetchComics, fetchUserComics, createComicBook, updateComic } from '../api'
 import Comics from '../components/Comics'
 import ComicFormContainer from './ComicFormContainer'
-import ComicShow from '../components/ComicShow'
+import ComicBookShow from '../components/ComicBookShow'
 import ComicEditForm from '../components/ComicEditForm'
 
 class ComicsContainer extends React.Component{
@@ -31,9 +31,10 @@ class ComicsContainer extends React.Component{
   }
 
   handleCreateComicBook(comic){
+    console.log("got to comic container handleCreateComicBook");
     createComicBook(comic)
     .then(com => {
-      this.setState(prevState => ({ comics: [...prevState.comics, com]}))
+      this.setState(prevState => ({ userComics: [...prevState.userComics, com]}))
       this.props.history.push(`/comics/${com.id}`)
     })
   }
@@ -57,6 +58,7 @@ class ComicsContainer extends React.Component{
 
   render(){
     console.log("container state: ", this.state);
+    console.log("container props: ", this.props);
     return(
       <div>
         <Switch>
@@ -67,8 +69,8 @@ class ComicsContainer extends React.Component{
             return <ComicEditForm comic={comic} onUpdate={this.handleUpdateComic} />}}
           />
           <Route path="/comics/:id" render={({match}) => {
-            const comic = this.state.comics.find(comic => comic.id === parseInt(match.params.id))
-            return <ComicShow comic={comic} />}}
+            const comicBook = this.state.userComics.find(comicBook => comicBook.id === parseInt(match.params.id))
+            return <ComicBookShow comicBook={comicBook} />}}
           />
         </Switch>
       </div>

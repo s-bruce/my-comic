@@ -32,29 +32,32 @@ class ComicCreateForm1 extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleCreateComic = this.handleCreateComic.bind(this)
     this.handleRenderAnotherForm = this.handleRenderAnotherForm.bind(this)
+    this.handleCreateComicBook = this.handleCreateComicBook.bind(this)
   }
 
   handleFileUpload(e){
-    const file = e.target.files[0]
-    const upload = request.post(CLOUDINARY_UPLOAD_URL)
-                        .field('upload_preset', CLOUDINARY_UPLOAD_PRESET)
-                        .field('file', file)
-    upload.end((err, response) => {
-      if (err) {
-        console.error(err)
-      }
-      if (response.body.secure_url !== '') {
-        const panels = this.state.comic.panels
-        panels[0].image_url = response.body.secure_url
-        this.setState({
-          comic: {panels}
-        })
-        this.setState({
-          scaledImageUrl: this.getScaledUrl(response.body.secure_url)
-        })
-        // refactor? combine these two setStates??
-      }
-    })
+    if (e.target.value){
+      const file = e.target.files[0]
+      const upload = request.post(CLOUDINARY_UPLOAD_URL)
+                          .field('upload_preset', CLOUDINARY_UPLOAD_PRESET)
+                          .field('file', file)
+      upload.end((err, response) => {
+        if (err) {
+          console.error(err)
+        }
+        if (response.body.secure_url !== '') {
+          const panels = this.state.comic.panels
+          panels[0].image_url = response.body.secure_url
+          this.setState({
+            comic: {panels}
+          })
+          this.setState({
+            scaledImageUrl: this.getScaledUrl(response.body.secure_url)
+          })
+          // refactor? combine these two setStates??
+        }
+      })
+    }
   }
 
   getScaledUrl(url){
@@ -80,19 +83,16 @@ class ComicCreateForm1 extends React.Component {
   }
 
   handleCreateComic(dataURL){
-    // this will make a comic object
     const comic = {
-      comic: {
-        canvas_url: dataURL,
-        panels_attributes: {
-          '0': {
-            text: this.state.comic.panels[0].text,
-            image_url: this.state.comic.panels[0].image_url
-          }
+      canvas_url: dataURL,
+      panels_attributes: {
+        '0': {
+          text: this.state.comic.panels[0].text,
+          image_url: this.state.comic.panels[0].image_url
         }
       }
     }
-    // call this.props.onCreateComic and pass comic object
+
     this.props.onCreateComic(comic)
     this.setState({comicCreated: true})
   }
@@ -105,12 +105,17 @@ class ComicCreateForm1 extends React.Component {
     }
   }
 
+  handleCreateComicBook(){
+    console.log("form1 handleCreateComicBook");
+    this.props.onCreateComicBook()
+  }
+
   render(){
     console.log("form1 state: ", this.state);
     return(
       <div>
         {this.state.renderNewInstance ?
-          (<ComicCreateForm1 onCreateComic={this.props.onCreateComic} />)
+          (<ComicCreateForm1 onCreateComic={this.props.onCreateComic} onCreateComicBook={this.props.onCreateComicBook} />)
           : (
           <div>
             <h2>Create A One-Panel Page</h2>
@@ -129,7 +134,7 @@ class ComicCreateForm1 extends React.Component {
                 <h3>What do you want to do next?</h3>
                 <Button content='Create a one-panel page' color='yellow' onClick={()=> {this.handleRenderAnotherForm(1)}} />
                 <Button content='Create a two-panel page' color='yellow' onClick={()=> {this.handleRenderAnotherForm(2)}} />
-                <Button content="I'm finished! Show me my comic book" color='blue' floated='right' />
+                <Button content="I'm finished! Show me my comic book" color='blue' floated='right' onClick={this.handleCreateComicBook} />
               </div>
               )
               : null }

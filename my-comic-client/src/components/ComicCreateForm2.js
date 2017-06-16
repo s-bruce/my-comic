@@ -42,26 +42,29 @@ class ComicCreateForm2 extends React.Component {
     this.handleCreateComic = this.handleCreateComic.bind(this)
     this.handleMergePanels = this.handleMergePanels.bind(this)
     this.handleRenderAnotherForm = this.handleRenderAnotherForm.bind(this)
+    this.handleCreateComicBook = this.handleCreateComicBook.bind(this)
   }
 
   handleFileUpload(e, index){
-    const file = e.target.files[0]
-    const upload = request.post(CLOUDINARY_UPLOAD_URL)
-                        .field('upload_preset', CLOUDINARY_UPLOAD_PRESET)
-                        .field('file', file)
-    upload.end((err, response) => {
-      if (err) {
-        console.error(err)
-      }
-      if (response.body.secure_url !== '') {
-        const panels = this.state.comic.panels
-        panels[index].image_url = response.body.secure_url
-        panels[index].scaledImageUrl = this.getScaledUrl(response.body.secure_url)
-        this.setState({
-          comic: {panels}
-        })
-      }
-    })
+    if (e.target.value){
+      const file = e.target.files[0]
+      const upload = request.post(CLOUDINARY_UPLOAD_URL)
+                          .field('upload_preset', CLOUDINARY_UPLOAD_PRESET)
+                          .field('file', file)
+      upload.end((err, response) => {
+        if (err) {
+          console.error(err)
+        }
+        if (response.body.secure_url !== '') {
+          const panels = this.state.comic.panels
+          panels[index].image_url = response.body.secure_url
+          panels[index].scaledImageUrl = this.getScaledUrl(response.body.secure_url)
+          this.setState({
+            comic: {panels}
+          })
+        }
+      })
+    }
   }
 
   getScaledUrl(url){
@@ -100,17 +103,15 @@ class ComicCreateForm2 extends React.Component {
 
   handleCreateComic(dataURL){
     const comic = {
-      comic: {
-        canvas_url: dataURL,
-        panels_attributes: {
-          '0': {
-            text: this.state.comic.panels[0].text,
-            image_url: this.state.comic.panels[0].image_url
-          },
-          '1': {
-            text: this.state.comic.panels[1].text,
-            image_url: this.state.comic.panels[1].image_url
-          }
+      canvas_url: dataURL,
+      panels_attributes: {
+        '0': {
+          text: this.state.comic.panels[0].text,
+          image_url: this.state.comic.panels[0].image_url
+        },
+        '1': {
+          text: this.state.comic.panels[1].text,
+          image_url: this.state.comic.panels[1].image_url
         }
       }
     }
@@ -124,6 +125,11 @@ class ComicCreateForm2 extends React.Component {
     } else {
       this.props.history.push('/comics/new/1')
     }
+  }
+
+  handleCreateComicBook(){
+    console.log("form2 handleCreateComicBook");
+    this.props.onCreateComicBook()
   }
 
   render(){
@@ -167,7 +173,7 @@ class ComicCreateForm2 extends React.Component {
                   <h3>What do you want to do next?</h3>
                   <Button basic content='Create a one-panel page' color='blue' onClick={()=> {this.handleRenderAnotherForm(1)}} />
                   <Button basic content='Create a two-panel page' color='blue' onClick={()=> {this.handleRenderAnotherForm(2)}} />
-                  <Button content="I'm finished! Show me my comic book" color='blue' floated='right' />
+                  <Button content="I'm finished! Show me my comic book" color='blue' floated='right' onClick={this.handleCreateComicBook} />
                 </div>
                 )
                 : null }
@@ -178,4 +184,4 @@ class ComicCreateForm2 extends React.Component {
   }
 }
 
-export default withRouter(ComicCreateForm2) 
+export default withRouter(ComicCreateForm2)

@@ -4,6 +4,10 @@ body {
   font-family: sans-serif;
 }
 
+.center-text {
+  text-align: center;
+}
+
 .component-preview {
   max-width: 500px;
 }
