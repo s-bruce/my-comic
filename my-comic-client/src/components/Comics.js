@@ -4,8 +4,8 @@ import { Card } from 'semantic-ui-react'
 import ComicPreview from './ComicPreview'
 
 function Comics(props){
-  const comicEls = props.userComics.map(comicBook =>
-    <ComicPreview comicBook={comicBook} />
+  const comicEls = props.userComics.map((comicBook, i) =>
+    <ComicPreview comicBook={comicBook} key={i} />
   )
 
   return(

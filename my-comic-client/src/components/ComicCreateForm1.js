@@ -3,6 +3,7 @@ import request from 'superagent'
 import { withRouter } from 'react-router-dom'
 import { Button, Form } from 'semantic-ui-react'
 
+import ComicCreateForm1Copy from './ComicCreateForm1'
 import Canvas from './Canvas'
 
 const CLOUDINARY_UPLOAD_PRESET = 'azp6zqy3'
@@ -111,11 +112,10 @@ class ComicCreateForm1 extends React.Component {
   }
 
   render(){
-    console.log("form1 state: ", this.state);
     return(
       <div>
         {this.state.renderNewInstance ?
-          (<ComicCreateForm1 onCreateComic={this.props.onCreateComic} onCreateComicBook={this.props.onCreateComicBook} />)
+          (<ComicCreateForm1Copy onCreateComic={this.props.onCreateComic} onCreateComicBook={this.props.onCreateComicBook} />)
           : (
           <div>
             <h2>Create A One-Panel Page</h2>

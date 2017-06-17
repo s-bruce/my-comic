@@ -3,6 +3,7 @@ import request from 'superagent'
 import { withRouter } from 'react-router-dom'
 import { Button, Form } from 'semantic-ui-react'
 
+import ComicCreateForm2Copy from './ComicCreateForm2'
 import Canvas2 from './Canvas2'
 import MasterCanvas from './MasterCanvas'
 
@@ -136,7 +137,7 @@ class ComicCreateForm2 extends React.Component {
     return(
       <div>
         {this.state.renderNewInstance ?
-          (<ComicCreateForm2 onCreateComic={this.props.onCreateComic} />)
+          (<ComicCreateForm2Copy onCreateComic={this.props.onCreateComic} onCreateComicBook={this.props.onCreateComicBook} />)
           : (
             <div>
               <h2>Create A Two-Panel Page</h2>
