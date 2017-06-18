@@ -66,7 +66,6 @@ class ComicsContainer extends React.Component{
         })
         return { userComics: updatedComics }
       })
-      // this.props.history.push(`/comics/${com.id}`)
     })
   }
 

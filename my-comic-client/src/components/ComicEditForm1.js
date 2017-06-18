@@ -1,6 +1,7 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import request from 'superagent'
-import { Button, Form } from 'semantic-ui-react'
+import { Button, Form, Message } from 'semantic-ui-react'
 
 import Canvas from './Canvas'
 
@@ -23,7 +24,8 @@ class ComicEditForm1 extends React.Component {
       comic: {
         canvas_url: props.comic.canvas_url,
         panels: panels,
-        renderCanvas: false
+        renderCanvas: false,
+        comicUpdated: false
       }
     }
 
@@ -103,7 +105,7 @@ class ComicEditForm1 extends React.Component {
     }
 
     this.props.onEdit(comic)
-    // this.setState({comicCreated: true})
+    this.setState({comicUpdated: true})
   }
 
   render(){
@@ -120,18 +122,15 @@ class ComicEditForm1 extends React.Component {
           <Form.Button type='submit' content='Edit Page' color='blue' />
         </Form>
 
+        {this.state.comicUpdated ? (
+          <Message positive>
+            <Message.Header>Page successfully updated!</Message.Header>
+            <p>See your updated <Link to={`/comics/${this.props.comicBookId}`}>comic</Link>.</p>
+          </Message>)
+        : null }
+
         {this.state.renderCanvas ?
           (<Canvas comic={this.state.comic} scaledImageUrl={this.state.comic.panels[0].scaledImageUrl} updateComic={this.handleUpdateComic} />)
-          : null }
-
-        {this.state.comicCreated ? (
-          <div>
-            <h3>What do you want to do next?</h3>
-            <Button content='Create a one-panel page' color='yellow' onClick={()=> {this.handleRenderAnotherForm(1)}} />
-            <Button content='Create a two-panel page' color='yellow' onClick={()=> {this.handleRenderAnotherForm(2)}} />
-            <Button content="I'm finished! Show me my comic book" color='blue' floated='right' onClick={this.handleCreateComicBook} />
-          </div>
-          )
           : null }
       </div>
     )

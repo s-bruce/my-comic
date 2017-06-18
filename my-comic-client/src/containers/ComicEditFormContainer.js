@@ -66,7 +66,7 @@ class ComicEditFormContainer extends React.Component {
     return(
       <div>
         {this.props.comic.panels.length === 1 ?
-          <ComicEditForm1 comic={this.props.comic} onEdit={this.editComicsArray} />
+          <ComicEditForm1 comic={this.props.comic} comicBookId={this.props.comicBook.id} onEdit={this.editComicsArray} />
           :
           <ComicEditForm2 comic={this.props.comic} />
         }
