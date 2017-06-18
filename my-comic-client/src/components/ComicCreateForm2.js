@@ -29,6 +29,7 @@ class ComicCreateForm2 extends React.Component {
           }
         ]
       },
+      renderForm2: false,
       renderCanvas1: false,
       renderCanvas2: false,
       comicCreated: false,
@@ -92,10 +93,13 @@ class ComicCreateForm2 extends React.Component {
 
   handleCreatePanelOne(dataURL){
     this.setState({canvas1: dataURL})
+    this.setState({renderForm2: true})
+    window.scrollTo(0,document.body.scrollHeight)
   }
 
   handleCreatePanelTwo(dataURL){
     this.setState({canvas2: dataURL})
+    window.scrollTo(0,document.body.scrollHeight)
   }
 
   handleMergePanels(){
@@ -118,6 +122,7 @@ class ComicCreateForm2 extends React.Component {
     }
     this.props.onCreateComic(comic)
     this.setState({comicCreated: true})
+    window.scrollTo(0,document.body.scrollHeight)
   }
 
   handleRenderAnotherForm(numOfPanels){
@@ -147,14 +152,16 @@ class ComicCreateForm2 extends React.Component {
                 <Form.Button type='submit' content='Create Panel One' color='blue' />
               </Form><br/>
 
-              <Form onSubmit={(e)=> {this.handleSubmit(e, 'renderCanvas2')}}>
-                <Form.Input type='file' label='Panel Two Image' required onChange={(e)=> {this.handleFileUpload(e, 1)}} />
-                <Form.TextArea rows='3' label='Panel Two Text' placeholder='Panel Two Text' required value={this.state.comic.panels[1].text} onChange={(e)=> {this.handleTextChange(e, 1)}} />
-                <Form.Button type='submit' content='Create Panel Two' color='blue' />
-              </Form>
-
               {this.state.renderCanvas1 ?
                 (<Canvas2 panel={this.state.comic.panels[0]} createPanel={this.handleCreatePanelOne} />)
+                : null }
+
+              {this.state.renderForm2 ? (
+                <Form onSubmit={(e)=> {this.handleSubmit(e, 'renderCanvas2')}}>
+                  <Form.Input type='file' label='Panel Two Image' required onChange={(e)=> {this.handleFileUpload(e, 1)}} />
+                  <Form.TextArea rows='3' label='Panel Two Text' placeholder='Panel Two Text' required value={this.state.comic.panels[1].text} onChange={(e)=> {this.handleTextChange(e, 1)}} />
+                  <Form.Button type='submit' content='Create Panel Two' color='blue' />
+                </Form>)
                 : null }
 
               {this.state.renderCanvas2 ?

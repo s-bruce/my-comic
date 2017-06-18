@@ -15,14 +15,20 @@ class ComicBookShow extends React.Component {
     this.handleEditComic = this.handleEditComic.bind(this)
   }
 
+  componentDidMount(){
+    window.scrollTo(0,0)
+  }
+
   previousPage(){
     const currentIndex = this.state.currentIndex - 1
     this.setState({currentIndex: currentIndex})
+    window.scrollTo(0, 0)
   }
 
   nextPage(){
     const currentIndex = this.state.currentIndex + 1
     this.setState({currentIndex: currentIndex})
+    window.scrollTo(0, 0)
   }
 
   handleEditComic(){

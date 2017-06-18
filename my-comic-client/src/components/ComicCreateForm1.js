@@ -96,6 +96,8 @@ class ComicCreateForm1 extends React.Component {
 
     this.props.onCreateComic(comic)
     this.setState({comicCreated: true})
+
+    window.scrollTo(0,document.body.scrollHeight)
   }
 
   handleRenderAnotherForm(numOfPanels){
