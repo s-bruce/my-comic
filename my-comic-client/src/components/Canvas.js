@@ -36,9 +36,9 @@ class Canvas extends React.Component {
 
   wrapAndRenderText() {
     this.state.context.fillStyle = "#000000"
-    this.state.context.font = "20px 'RoofRunners'"
-    let lineHeight = 25
-    let x = 250
+    this.state.context.font = "17px 'RoofRunners'"
+    let lineHeight = 22
+    let x = 252
     let y = 60
     let rectHeight = 0
     let numOfLines = 1
@@ -61,10 +61,10 @@ class Canvas extends React.Component {
       }
     }
     this.state.context.fillText(line, x, y)
-    rectHeight += lineHeight
+    rectHeight = lineHeight + rectHeight + 5
     this.setState({rectHeight: rectHeight})
     if(numOfLines === 1){
-      this.setState({rectWidth: this.state.context.measureText(line).width+5})
+      this.setState({rectWidth: this.state.context.measureText(line).width+9})
     }
   }
   //
