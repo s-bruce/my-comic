@@ -50,7 +50,6 @@ class ComicFormContainer extends React.Component {
   }
 
   render(){
-    console.log("Form container state: ", this.state);
     return(
       <div>
         <Switch>

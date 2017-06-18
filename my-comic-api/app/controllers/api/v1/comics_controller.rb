@@ -26,13 +26,13 @@ class Api::V1::ComicsController < ApplicationController
 
   def comic_params
     params.require(:comic).permit(
-      :title,
       :canvas_url,
-      :account_id,
+      :comic_book_id,
       panels_attributes: [
         :id,
         :text,
-        :image_url
+        :image_url,
+        :comic_id
       ]
     )
   end

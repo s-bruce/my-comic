@@ -59,7 +59,7 @@ export function createComicBook(comic){
   }).then(res => res.json())
 }
 
-export function updateComic(id, comic){
+export function updateComicBook(id, comic){
   return fetch(`http://localhost:3000/api/v1/comic_books/${id}`, {
     headers: {
       'Accept': 'application/json',

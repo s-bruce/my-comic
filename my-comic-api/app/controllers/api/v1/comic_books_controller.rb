@@ -19,13 +19,13 @@ class Api::V1::ComicBooksController < ApplicationController
   def update
     comic_book = ComicBook.find(params[:id])
     comic_book.update(comic_book_params)
-    render json: comic_book
+    render json: comic_book, include: 'comics.panels'
   end
 
   def user_comics
     user = Account.find(params[:id])
     comic_books = user.comic_books
-    render json: comic_books
+    render json: comic_books, include: 'comics.panels'
   end
 
   private

@@ -4,7 +4,6 @@ import { Card, Image } from 'semantic-ui-react'
 
 function ComicPreview(props){
   let pages = props.comicBook.comics.length > 1 ? "Pages" : "Page"
-
   return(
     <Card>
       <Link to={`/comics/${props.comicBook.id}`}>

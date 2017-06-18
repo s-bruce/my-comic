@@ -1,6 +1,6 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import { Grid, Button, Image } from 'semantic-ui-react'
+import { Link, withRouter } from 'react-router-dom'
+import { Grid, Button, Image, Dropdown } from 'semantic-ui-react'
 
 class ComicBookShow extends React.Component {
   constructor(){
@@ -12,6 +12,7 @@ class ComicBookShow extends React.Component {
 
     this.previousPage = this.previousPage.bind(this)
     this.nextPage = this.nextPage.bind(this)
+    this.handleEditComic = this.handleEditComic.bind(this)
   }
 
   previousPage(){
@@ -22,6 +23,13 @@ class ComicBookShow extends React.Component {
   nextPage(){
     const currentIndex = this.state.currentIndex + 1
     this.setState({currentIndex: currentIndex})
+  }
+
+  handleEditComic(){
+    const comicBookId = this.props.comicBook.id
+    const comicId = this.props.comicBook.comics[this.state.currentIndex].id
+
+    this.props.history.push(`/comics/${comicBookId}/edit/${comicId}`)
   }
 
   render(){
@@ -36,14 +44,24 @@ class ComicBookShow extends React.Component {
       lastIndex = this.props.comicBook.comics.length - 1
     }
 
+    const editOptions = [
+      { key: 'editPage', icon: 'edit', text: 'Edit Page', value: 'editPage', onClick: this.handleEditComic },
+      // { key: 'deletePage', icon: 'delete', text: 'Delete Page', value: 'deletePage' },
+      { key: 'editTitle', icon: 'edit', text: 'Edit Title', value: 'editTitle' },
+      // { key: 'deleteBook', icon: 'delete', text: 'Delete Comic Book', value: 'deleteBook' },
+    ]
+
     if (!this.props.comicBook){
       return null
     }
 
     return(
-      // {comicEls}
       <div>
         <h1 className="title-font">{this.props.comicBook.title}</h1>
+
+        <Button.Group color='yellow'>
+          <Dropdown text='Edit' options={editOptions} floating button />
+        </Button.Group>
 
         {comicEls[this.state.currentIndex]}
 
@@ -63,7 +81,7 @@ class ComicBookShow extends React.Component {
 }
 
 
-export default ComicBookShow
+export default withRouter(ComicBookShow)
 
 {/* <Grid>
   <Grid.Row centered>

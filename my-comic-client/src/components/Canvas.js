@@ -17,10 +17,12 @@ class Canvas extends React.Component {
       this.wrapAndRenderText()
       this.renderRect()
       this.wrapAndRenderText()
+
+      const dataURL = this.state.canvas.toDataURL()
       if(this.props.createComic){
-        this.handleCreateCanvas()
-      } else if(this.props.onUpdate){
-        this.handleUpdateComic()
+        this.props.createComic(dataURL)
+      } else if(this.props.updateComic){
+        this.props.updateComic(dataURL)
       }
     }
   }
@@ -65,44 +67,31 @@ class Canvas extends React.Component {
       this.setState({rectWidth: this.state.context.measureText(line).width+5})
     }
   }
+  //
+  // handleCreateCanvas(){
+  //   const dataURL = this.state.canvas.toDataURL()
+  //   this.props.createComic(dataURL)
+  // }
 
-  handleCreateCanvas(){
-    const dataURL = this.state.canvas.toDataURL()
-    // const comic = {
-    //   comic: {
-    //     title: this.props.comic.title,
-    //     canvas_url: dataURL,
-    //     account_id: this.props.user.id,
-    //     panels_attributes: {
-    //       '0': {
-    //         text: this.props.comic.panels[0].text,
-    //         image_url: this.props.comic.panels[0].cloudinaryImageUrl
-    //       }
-    //     }
-    //   }
-    // }
-    this.props.createComic(dataURL)
-  }
-
-  handleUpdateComic(){
-    const dataURL = this.state.canvas.toDataURL()
-    const comicId = this.props.comic.id
-    const comic = {
-      comic: {
-        title: this.props.comic.title,
-        canvas_url: dataURL,
-        account_id: this.props.comic.account_id,
-        panels_attributes: {
-          '0': {
-            id: this.props.comic.panels[0].id,
-            text: this.props.comic.panels[0].text,
-            image_url: this.props.comic.panels[0].cloudinaryImageUrl
-          }
-        }
-      }
-    }
-    this.props.onUpdate(comicId, comic)
-  }
+  // handleUpdateComic(){
+  //   const dataURL = this.state.canvas.toDataURL()
+  //   const comicId = this.props.comic.id
+  //   const comic = {
+  //     comic: {
+  //       title: this.props.comic.title,
+  //       canvas_url: dataURL,
+  //       account_id: this.props.comic.account_id,
+  //       panels_attributes: {
+  //         '0': {
+  //           id: this.props.comic.panels[0].id,
+  //           text: this.props.comic.panels[0].text,
+  //           image_url: this.props.comic.panels[0].cloudinaryImageUrl
+  //         }
+  //       }
+  //     }
+  //   }
+  //   this.props.onUpdate(comicId, comic)
+  // }
 
   render() {
     return (

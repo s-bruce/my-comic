@@ -1,11 +1,11 @@
 import React from 'react'
 import { Switch, Route, withRouter } from 'react-router-dom'
 
-import { fetchComics, fetchUserComics, createComicBook, updateComic } from '../api'
+import { fetchComics, fetchUserComics, createComicBook, updateComicBook } from '../api'
 import Comics from '../components/Comics'
 import ComicFormContainer from './ComicFormContainer'
 import ComicBookShow from '../components/ComicBookShow'
-import ComicEditForm from '../components/ComicEditForm'
+import ComicEditFormContainer from './ComicEditFormContainer'
 
 class ComicsContainer extends React.Component{
   constructor(){
@@ -17,7 +17,7 @@ class ComicsContainer extends React.Component{
     }
 
     this.handleCreateComicBook = this.handleCreateComicBook.bind(this)
-    this.handleUpdateComic = this.handleUpdateComic.bind(this)
+    this.handleUpdateComicBook = this.handleUpdateComicBook.bind(this)
   }
 
   componentDidMount(){
@@ -27,11 +27,14 @@ class ComicsContainer extends React.Component{
 
   componentWillReceiveProps(props){
     fetchUserComics(props.user.id)
-    .then(comics => this.setState({userComics: comics}))
+    .then(comics => {
+      this.setState({userComics: comics})
+
+    }
+    )
   }
 
   handleCreateComicBook(comic){
-    console.log("got to comic container handleCreateComicBook");
     createComicBook(comic)
     .then(com => {
       this.setState(prevState => ({ userComics: [...prevState.userComics, com]}))
@@ -39,34 +42,45 @@ class ComicsContainer extends React.Component{
     })
   }
 
-  handleUpdateComic(id, comic){
-    updateComic(id, comic)
+  handleUpdateComicBook(id, comic){
+    updateComicBook(id, comic)
     .then(com => {
+      const sortedComics = com.comics.sort(function(a, b) {
+        if (a.id < b.id) {
+          return -1;
+        }
+        if (a.id > b.id) {
+          return 1;
+        }
+        return 0;
+      })
+      com.comics = sortedComics
+
       this.setState(prevState => {
-        const updatedComics = prevState.comics.map(c => {
+        const updatedComics = prevState.userComics.map(c => {
           if (c.id === com.id){
             return com
           } else {
             return c
           }
         })
-        return { comics: updatedComics }
+        return { userComics: updatedComics }
       })
-      this.props.history.push(`/comics/${com.id}`)
+      // this.props.history.push(`/comics/${com.id}`)
     })
   }
 
   render(){
-    console.log("container state: ", this.state);
-    console.log("container props: ", this.props);
+    console.log("comics container state: ", this.state);
     return(
       <div>
         <Switch>
           <Route exact path="/comics" render={()=> <Comics userComics={this.state.userComics}/>} />
           <Route path="/comics/new" render={()=> <ComicFormContainer user={this.props.user} onCreate={this.handleCreateComicBook}/>} />
-          <Route path="/comics/:id/edit" render={({match}) => {
-            const comic = this.state.comics.find(comic => comic.id === parseInt(match.params.id))
-            return <ComicEditForm comic={comic} onUpdate={this.handleUpdateComic} />}}
+          <Route path="/comics/:bookid/edit/:comicid" render={({match}) => {
+            const comicBook = this.state.userComics.find(comicBook => comicBook.id === parseInt(match.params.bookid))
+            const comic = comicBook.comics.find(comic => comic.id === parseInt(match.params.comicid))
+            return <ComicEditFormContainer comicBook={comicBook} comic={comic} onUpdate={this.handleUpdateComicBook} />}}
           />
           <Route path="/comics/:id" render={({match}) => {
             const comicBook = this.state.userComics.find(comicBook => comicBook.id === parseInt(match.params.id))
