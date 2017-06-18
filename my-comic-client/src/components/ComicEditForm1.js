@@ -86,6 +86,13 @@ class ComicEditForm1 extends React.Component {
   handleSubmit(e){
     e.preventDefault()
     this.setScaledUrl()
+
+    const panels = this.state.comic.panels
+    panels[0].text = panels[0].text.replace(/"/g, "'")
+    this.setState({
+      comic: {panels}
+    })
+    
     this.setState({renderCanvas: true})
   }
 

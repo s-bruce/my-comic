@@ -86,9 +86,16 @@ class ComicCreateForm2 extends React.Component {
     })
   }
 
-  handleSubmit(e, prop){
+  handleSubmit(e, index, renderCanvas){
     e.preventDefault()
-    this.setState({[prop]: true})
+    const panels = this.state.comic.panels
+    panels[index].text = panels[index].text.replace(/"/g, "'")
+
+    this.setState({
+      comic: {panels}
+    })
+
+    this.setState({[renderCanvas]: true})
   }
 
   handleCreatePanelOne(dataURL){
@@ -146,7 +153,7 @@ class ComicCreateForm2 extends React.Component {
           : (
             <div>
               <h2>Create A Two-Panel Page</h2>
-              <Form onSubmit={(e)=> {this.handleSubmit(e, 'renderCanvas1')}}>
+              <Form onSubmit={(e)=> {this.handleSubmit(e, 0, 'renderCanvas1')}}>
                 <Form.Input type='file' label='Panel One Image' required onChange={(e)=> {this.handleFileUpload(e, 0)}} />
                 <Form.TextArea rows='3' label='Panel One Text' placeholder='Panel One Text' required value={this.state.comic.panels[0].text} onChange={(e)=> {this.handleTextChange(e, 0)}} />
                 <Form.Button type='submit' content='Create Panel One' color='blue' />
@@ -157,7 +164,7 @@ class ComicCreateForm2 extends React.Component {
                 : null }
 
               {this.state.renderForm2 ? (
-                <Form onSubmit={(e)=> {this.handleSubmit(e, 'renderCanvas2')}}>
+                <Form onSubmit={(e)=> {this.handleSubmit(e, 1, 'renderCanvas2')}}>
                   <Form.Input type='file' label='Panel Two Image' required onChange={(e)=> {this.handleFileUpload(e, 1)}} />
                   <Form.TextArea rows='3' label='Panel Two Text' placeholder='Panel Two Text' required value={this.state.comic.panels[1].text} onChange={(e)=> {this.handleTextChange(e, 1)}} />
                   <Form.Button type='submit' content='Create Panel Two' color='blue' />

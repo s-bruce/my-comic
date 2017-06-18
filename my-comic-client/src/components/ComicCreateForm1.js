@@ -80,6 +80,13 @@ class ComicCreateForm1 extends React.Component {
 
   handleSubmit(e){
     e.preventDefault()
+
+    const panels = this.state.comic.panels
+    panels[0].text = panels[0].text.replace(/"/g, "'")
+    this.setState({
+      comic: {panels}
+    })
+
     this.setState({renderCanvas: true})
   }
 
@@ -114,6 +121,7 @@ class ComicCreateForm1 extends React.Component {
   }
 
   render(){
+    console.log("form state: ", this.state);
     return(
       <div>
         {this.state.renderNewInstance ?
