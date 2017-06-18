@@ -27,11 +27,32 @@ class ComicsContainer extends React.Component{
 
   componentWillReceiveProps(props){
     fetchUserComics(props.user.id)
-    .then(comics => {
-      this.setState({userComics: comics})
+    .then(comicBooks => {
+      comicBooks.forEach(comicBook => {
+        comicBook.comics.sort(function(a, b) {
+          if (a.id < b.id) {
+            return -1;
+          }
+          if (a.id > b.id) {
+            return 1;
+          }
+          return 0;
+        })
 
-    }
-    )
+      })
+
+      comicBooks.sort(function(a, b) {
+        if (a.id < b.id) {
+          return 1;
+        }
+        if (a.id > b.id) {
+          return -1;
+        }
+        return 0;
+      })
+
+      this.setState({userComics: comicBooks})
+    })
   }
 
   handleCreateComicBook(comic){

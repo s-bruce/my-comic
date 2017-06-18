@@ -116,12 +116,10 @@ class ComicCreateForm1 extends React.Component {
   }
 
   handleCreateComicBook(){
-    console.log("form1 handleCreateComicBook");
     this.props.onCreateComicBook()
   }
 
   render(){
-    console.log("form state: ", this.state);
     return(
       <div>
         {this.state.renderNewInstance ?
