@@ -1,7 +1,7 @@
 import React from 'react'
 import request from 'superagent'
 import { withRouter } from 'react-router-dom'
-import { Button, Form } from 'semantic-ui-react'
+import { Grid, Divider, Segment, Button, Form, Image } from 'semantic-ui-react'
 
 import ComicCreateForm1Copy from './ComicCreateForm1'
 import Canvas from './Canvas'
@@ -91,6 +91,8 @@ class ComicCreateForm1 extends React.Component {
   }
 
   handleCreateComic(dataURL){
+    this.setState({canvas_url: dataURL})
+
     const comic = {
       canvas_url: dataURL,
       panels_attributes: {
@@ -104,7 +106,7 @@ class ComicCreateForm1 extends React.Component {
     this.props.onCreateComic(comic)
     this.setState({comicCreated: true})
 
-    window.scrollTo(0,document.body.scrollHeight)
+    // window.scrollTo(0,document.body.scrollHeight)
   }
 
   handleRenderAnotherForm(numOfPanels){
@@ -126,26 +128,61 @@ class ComicCreateForm1 extends React.Component {
           (<ComicCreateForm1Copy onCreateComic={this.props.onCreateComic} onCreateComicBook={this.props.onCreateComicBook} />)
           : (
           <div>
-            <h2>Create A One-Panel Page</h2>
-            <Form onSubmit={this.handleSubmit}>
-              <Form.Input type='file' label='Image' required onChange={this.handleFileUpload} />
-              <Form.TextArea rows='3' label='Text' placeholder='Text' value={this.state.comic.panels[0].text} required onChange={(e)=> {this.handleTextChange(e)}} />
-              <Form.Button type='submit' content='Create Page' color='blue' />
-            </Form>
+            <Divider hidden />
+            <Grid textAlign='center'>
+              <Grid.Row>
+                <h1 className='title-font'>Create A One-Panel Page</h1>
+              </Grid.Row>
+            </Grid>
+            <Divider hidden />
+            <Divider />
+            <Divider hidden />
 
-            {this.state.renderCanvas ?
-              (<Canvas comic={this.state.comic} scaledImageUrl={this.state.scaledImageUrl} createComic={this.handleCreateComic} />)
-              : null }
+            <Grid>
+              <Grid.Row>
+                <Grid.Column width={6}>
+                  <Segment color='blue' inverted padded>
+                    <Form onSubmit={this.handleSubmit}>
+                      <Form.Input type='file' label='Image' required onChange={this.handleFileUpload} />
+                      <Form.TextArea rows='3' label='Text' placeholder='Text' value={this.state.comic.panels[0].text} required onChange={(e)=> {this.handleTextChange(e)}} />
+                      <Form.Button type='submit' content='Create Page' color='yellow' />
+                    </Form>
+                  </Segment>
+                  {this.state.comicCreated ? (
+                    <div>
+                      <Divider hidden />
+                      <Divider />
+                      <Divider hidden />
+                      <Segment.Group raised>
+                        <Segment>
+                          <h3>What do you want to do next?</h3>
+                        </Segment>
+                        <Segment>
+                          <Button icon="write" content='Create a one-panel page' color='blue' onClick={()=> {this.handleRenderAnotherForm(1)}} /><br/><br/>
+                          <Button icon="write" content='Create a two-panel page' color='blue' onClick={()=> {this.handleRenderAnotherForm(2)}} /><br/><br/>
+                          <Button icon="book" content="I'm finished! Show me my comic book" color='red' onClick={this.handleCreateComicBook} />
+                        </Segment>
+                      </Segment.Group>
+                    </div>
+                    )
+                    : null }
+                </Grid.Column>
+                <Grid.Column width={1} />
+                <Grid.Column width={9}>
+                  {this.state.comicCreated ? (
+                    <Image src={this.state.canvas_url} />
+                  )
+                    : null }
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
 
-            {this.state.comicCreated ? (
-              <div>
-                <h3>What do you want to do next?</h3>
-                <Button content='Create a one-panel page' color='yellow' onClick={()=> {this.handleRenderAnotherForm(1)}} />
-                <Button content='Create a two-panel page' color='yellow' onClick={()=> {this.handleRenderAnotherForm(2)}} />
-                <Button content="I'm finished! Show me my comic book" color='blue' floated='right' onClick={this.handleCreateComicBook} />
-              </div>
-              )
-              : null }
+
+
+
+              {this.state.renderCanvas ?
+                (<Canvas comic={this.state.comic} scaledImageUrl={this.state.scaledImageUrl} createComic={this.handleCreateComic} />)
+                : null }
           </div>
         )}
       </div>

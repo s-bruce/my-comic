@@ -97,7 +97,7 @@ class Canvas extends React.Component {
     return (
       <div>
         <div>
-          <canvas ref="canvas" width={800} height={1100} />
+          <canvas ref="canvas" width={800} height={1100} className="hidden-image" />
           <img ref="image" src={this.props.scaledImageUrl} className="hidden-image" alt="" crossOrigin="Anonymous" />
         </div>
       </div>

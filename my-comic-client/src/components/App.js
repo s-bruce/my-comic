@@ -48,7 +48,7 @@ class App extends React.Component {
         localStorage.setItem('jwt', res.token)
         this.setState({ loggedIn: true })
         this.setState({ currentUser: res.account })
-        this.props.history.push('/comics/new')
+        this.props.history.push('/comics/welcome')
       }
     })
   }

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, withRouter } from 'react-router-dom'
-import { Grid, Button, Image, Dropdown } from 'semantic-ui-react'
+import { Grid, Divider, Segment, Button, Image, Dropdown, Header, Icon } from 'semantic-ui-react'
 
 class ComicBookShow extends React.Component {
   constructor(){
@@ -13,6 +13,7 @@ class ComicBookShow extends React.Component {
     this.previousPage = this.previousPage.bind(this)
     this.nextPage = this.nextPage.bind(this)
     this.handleEditComic = this.handleEditComic.bind(this)
+    this.handleEditTitle = this.handleEditTitle.bind(this)
   }
 
   componentDidMount(){
@@ -38,24 +39,29 @@ class ComicBookShow extends React.Component {
     this.props.history.push(`/comics/${comicBookId}/edit/${comicId}`)
   }
 
+  handleEditTitle(){
+    const comicBookId = this.props.comicBook.id
+    this.props.history.push(`/comics/${comicBookId}/edit/title`)
+  }
+
   render(){
     let comicEls = []
     let lastIndex = 0
 
     if (this.props.comicBook){
       comicEls = this.props.comicBook.comics.map(comic =>
-        <div><Image src={comic.canvas_url} /><br/></div>
+        <Image src={comic.canvas_url} bordered centered />
       )
 
       lastIndex = this.props.comicBook.comics.length - 1
     }
 
-    const editOptions = [
-      { key: 'editPage', icon: 'edit', text: 'Edit Page', value: 'editPage', onClick: this.handleEditComic },
-      // { key: 'deletePage', icon: 'delete', text: 'Delete Page', value: 'deletePage' },
-      { key: 'editTitle', icon: 'edit', text: 'Edit Title', value: 'editTitle' },
-      // { key: 'deleteBook', icon: 'delete', text: 'Delete Comic Book', value: 'deleteBook' },
-    ]
+    // const editOptions = [
+    //   { key: 'editPage', icon: 'edit', text: 'Edit Page', value: 'editPage', onClick: this.handleEditComic },
+    //   // { key: 'deletePage', icon: 'delete', text: 'Delete Page', value: 'deletePage' },
+    //   { key: 'editTitle', icon: 'edit', text: 'Edit Title', value: 'editTitle', onClick: this.handleEditTitle },
+    //   // { key: 'deleteBook', icon: 'delete', text: 'Delete Comic Book', value: 'deleteBook' },
+    // ]
 
     if (!this.props.comicBook){
       return null
@@ -63,23 +69,66 @@ class ComicBookShow extends React.Component {
 
     return(
       <div>
-        <h1 className="title-font">{this.props.comicBook.title}</h1>
+        <Divider hidden />
+        {/* <Grid textAlign='center'>
+          <Grid.Row>
+            <h1 className='title-font'>{this.props.comicBook.title}</h1>
+          </Grid.Row>
+        </Grid>
+        <Divider hidden /> */}
 
-        <Button.Group color='yellow'>
+        <Grid>
+          <Grid.Row>
+            <Grid.Column width={2} />
+            <Grid.Column width={12}>
+              <Segment raised textAlign='center'>
+                <h1 className='title-font'>{this.props.comicBook.title}</h1>
+                {comicEls[this.state.currentIndex]}
+              </Segment>
+            </Grid.Column>
+            <Grid.Column width={2}>
+              <Header as='h4'>
+                <Icon name='edit' />
+                <Header.Content>
+                  Edit
+                </Header.Content>
+                <Dropdown inline>
+                  <Dropdown.Menu>
+                    <Dropdown.Item text='Edit Page' onClick={this.handleEditComic} />
+                    <Dropdown.Item text='Edit Title' onClick={this.handleEditTitle} />
+                  </Dropdown.Menu>
+                </Dropdown>
+              </Header>
+
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+
+        <Grid>
+          <Grid.Row>
+            <Grid.Column width={2} />
+            <Grid.Column floated='left' width={4}>
+              {this.state.currentIndex > 0 ?
+                <Button content='Previous Page' color='blue' floated='left' onClick={this.previousPage} />
+                : null
+              }
+            </Grid.Column>
+            <Grid.Column floated='right' width={4}>
+              {this.state.currentIndex != lastIndex ?
+                <Button content='Next Page' color='blue' floated='right' onClick={this.nextPage} />
+                : null
+              }
+            </Grid.Column>
+            <Grid.Column width={2} />
+          </Grid.Row>
+        </Grid>
+
+
+
+
+        {/* <Button.Group color='yellow'>
           <Dropdown text='Edit' options={editOptions} floating button />
-        </Button.Group>
-
-        {comicEls[this.state.currentIndex]}
-
-        {this.state.currentIndex > 0 ?
-          <Button content='Previous Page' color='blue' floated='left' onClick={this.previousPage} />
-          : null
-        }
-
-        {this.state.currentIndex != lastIndex ?
-          <Button content='Next Page' color='blue' floated='right' onClick={this.nextPage} />
-          : null
-        }
+        </Button.Group> */}
       </div>
     )
   }

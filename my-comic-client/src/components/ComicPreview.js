@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Card, Image } from 'semantic-ui-react'
+import { Grid, Card, Image } from 'semantic-ui-react'
 
 function ComicPreview(props){
   let pages = props.comicBook.comics.length > 1 ? "Pages" : "Page"
@@ -10,10 +10,10 @@ function ComicPreview(props){
         <Image src={props.comicBook.comics[0].canvas_url} />
       </Link>
       <Card.Content>
-        <Card.Header className="center-text">{props.comicBook.title}</Card.Header>
+        <h3 className="title-font">{props.comicBook.title}</h3>
       </Card.Content>
       <Card.Content extra>
-        <Card.Meta className="center-text">{props.comicBook.comics.length} {pages}</Card.Meta>
+        <Card.Meta>{props.comicBook.comics.length} {pages}</Card.Meta>
       </Card.Content>
     </Card>
   )

@@ -4,6 +4,11 @@ body {
   font-family: sans-serif;
 }
 
+.sky {
+  background-image: url("components/sky-comic.png");
+  background-size: cover;
+}
+
 .center-text {
   text-align: center;
 }

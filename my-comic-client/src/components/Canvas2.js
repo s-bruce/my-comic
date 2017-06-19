@@ -34,8 +34,8 @@ class Canvas2 extends React.Component {
       // }
       if(this.props.createPanel){
         this.handleCreatePanel()
-      } else if(this.props.onUpdate){
-        this.handleUpdateComic()
+      } else if(this.props.updatePanel){
+        this.handleUpdatePanel()
       }
     }
   }
@@ -86,12 +86,17 @@ class Canvas2 extends React.Component {
     this.props.createPanel(dataURL)
   }
 
+  handleUpdatePanel(){
+    const dataURL = this.state.canvas1.toDataURL()
+    this.props.updatePanel(dataURL)
+  }
+
   render() {
     return (
       <div>
         <div>
           {/* <canvas ref="canvasMaster" width={800} height={1100} /> */}
-          <canvas ref="canvas1" width={800} height={550} />
+          <canvas ref="canvas1" width={800} height={550} className="hidden-image" />
           {/* <canvas ref="canvas2" width={800} height={550} /> */}
           <img ref="image1" src={this.props.panel.scaledImageUrl} className="hidden-image" alt="" crossOrigin="Anonymous" />
           {/* <img ref="image2" src={this.props.comic.panels[1].scaledImageUrl} className="hidden-image" alt="" crossOrigin="Anonymous" /> */}

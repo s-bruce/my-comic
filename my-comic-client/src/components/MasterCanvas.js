@@ -73,11 +73,7 @@ class MasterCanvas extends React.Component {
     // this.setState({contextMaster: this.refs.canvasMaster.getContext('2d')})
     this.state.contextMaster.drawImage(canvas1,0,0)
     this.state.contextMaster.drawImage(canvas2,0,550)
-    if(this.props.createComic){
-      this.handleMergePanels()
-    } else if(this.props.onUpdate){
-      this.handleUpdateComic()
-    }
+    this.handleMergePanels()
   }
 
   // renderRect(context){
@@ -140,7 +136,11 @@ class MasterCanvas extends React.Component {
     //     }
     //   }
     // }
-    this.props.createComic(dataURL)
+    if (this.props.createComic){
+      this.props.createComic(dataURL)
+    } else if (this.props.updateComic){
+      this.props.updateComic(dataURL)
+    }
   }
 
   // handleUpdateComic(){
@@ -172,7 +172,7 @@ class MasterCanvas extends React.Component {
     return (
       <div>
         <div>
-          <canvas ref="canvasMaster" width={800} height={1100} />
+          <canvas ref="canvasMaster" width={800} height={1100} className="hidden-image" />
           {/* <canvas ref="canvas1" width={800} height={550} />
           <canvas ref="canvas2" width={800} height={550} /> */}
           <img ref="canvas1" src={this.props.canvas1} className="hidden-image" alt="" crossOrigin="Anonymous" />

@@ -1,29 +1,33 @@
 import React, { Component } from 'react'
-import { Menu, Button } from 'semantic-ui-react'
+import { Image, Menu, Button } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 
 class Navbar extends Component {
-  state = { activeItem: 'home' }
-
-  handleItemClick = (e, { name }) => this.setState({ activeItem: name })
 
   render() {
-    const { activeItem } = this.state
 
     return (
       <div>
         {this.props.loggedIn ? (
-          <Menu header>
-            <Menu.Item header>My Comic</Menu.Item>
-            <Link to={`/comics`}><Menu.Item name='comics' active={activeItem === 'comics'} content='My Comics' onClick={this.handleItemClick} /></Link>
-            <Link to={`/comics/new`}><Menu.Item name='new' active={activeItem === 'new'} content='Create A Comic' onClick={this.handleItemClick} /></Link>
-            <Link to={`/logout`}><Menu.Item name='logout' active={activeItem === 'logout'} content='Log Out' onClick={this.handleItemClick} /></Link>
+          <Menu color='red' inverted borderless size='massive'>
+            <Menu.Item>
+              <Link to={`/comics/welcome`}><Image src={require('./logo_white.png')} size='small' /></Link>
+            </Menu.Item>
+            <Menu.Item />
+            <Link to={`/comics`}><Menu.Item name='comics' className='comic-font' onClick={this.handleItemClick}><br/><br/>My Comics</Menu.Item></Link>
+            <Link to={`/comics/new`}><Menu.Item name='new' className='comic-font' onClick={this.handleItemClick}><br/><br/>Create A Comic</Menu.Item></Link>
+            <Menu.Menu position='right'>
+              <Link to={`/logout`}><Menu.Item name='logout' className='comic-font' onClick={this.handleItemClick}><br/><br/>Log Out</Menu.Item></Link>
+            </Menu.Menu>
           </Menu>
         ) : (
-          <Menu borderless>
-            <Menu.Item header>My Comic</Menu.Item>
-            <Link to={`/signup`}><Menu.Item name='signup' active={activeItem === 'signup'} onClick={this.handleItemClick}><Button primary content='Sign Up' /></Menu.Item></Link>
-            <Link to={`/login`}><Menu.Item name='login' active={activeItem === 'login'} onClick={this.handleItemClick}><Button content='Log In' /></Menu.Item></Link>
+          <Menu color='red' inverted borderless size='massive'>
+            <Menu.Item>
+              <Image src={require('./logo_white.png')} size='small' />
+            </Menu.Item>
+            <Menu.Item />
+            <Link to={`/signup`}><Menu.Item name='signup' className='comic-font' onClick={this.handleItemClick}><br/><br/>Sign Up</Menu.Item></Link>
+            <Link to={`/login`}><Menu.Item name='login' className='comic-font' onClick={this.handleItemClick}><br/><br/>Log In</Menu.Item></Link>
           </Menu>
         )}
       </div>
