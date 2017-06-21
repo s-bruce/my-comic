@@ -1,5 +1,6 @@
 import React from 'react'
 import { Switch, Route, withRouter } from 'react-router-dom'
+import { Dimmer, Loader } from 'semantic-ui-react'
 
 import { fetchComics, fetchUserComics, createComicBook, updateComicBook } from '../api'
 import Welcome from '../components/Welcome'
@@ -15,7 +16,7 @@ class ComicsContainer extends React.Component{
 
     this.state = {
       // comics: [],
-      userComics: []
+      userComics: [],
     }
 
     this.handleCreateComicBook = this.handleCreateComicBook.bind(this)
@@ -26,8 +27,39 @@ class ComicsContainer extends React.Component{
   componentDidMount(){
     // fetchComics()
     // .then(comics => this.setState({comics: comics}))
-  }
+    if(this.props.user.id){
+      fetchUserComics(this.props.user.id)
+      .then(comicBooks => {
+        comicBooks.forEach(comicBook => {
+          comicBook.comics.sort(function(a, b) {
+            if (a.id < b.id) {
+              return -1;
+            }
+            if (a.id > b.id) {
+              return 1;
+            }
+            return 0;
+          })
 
+        })
+
+        comicBooks.sort(function(a, b) {
+          if (a.id < b.id) {
+            return 1;
+          }
+          if (a.id > b.id) {
+            return -1;
+          }
+          return 0;
+        })
+
+        this.setState({
+          userComics: comicBooks
+        })
+      })
+    }
+  }
+  //
   componentWillReceiveProps(props){
     fetchUserComics(props.user.id)
     .then(comicBooks => {
@@ -54,7 +86,9 @@ class ComicsContainer extends React.Component{
         return 0;
       })
 
-      this.setState({userComics: comicBooks})
+      this.setState({
+        userComics: comicBooks
+      })
     })
   }
 
@@ -122,11 +156,17 @@ class ComicsContainer extends React.Component{
   }
 
   render(){
-    console.log("comics container state: ", this.state);
+    console.log("container state: ", this.state);
     return(
       <div>
+        {this.state.loading ? (
+          <Dimmer active>
+            <Loader>Loading</Loader>
+          </Dimmer>
+        ) : null }
+
         <Switch>
-          <Route exact path="/comics" render={()=> <Comics userComics={this.state.userComics}/>} />
+          <Route exact path="/comics/my" render={()=> <Comics userComics={this.state.userComics}/>} />
           <Route path="/comics/welcome" render={() => <Welcome user={this.props.user} />} />
           <Route path="/comics/new" render={()=> <ComicFormContainer user={this.props.user} onCreate={this.handleCreateComicBook}/>} />
           <Route exact path="/comics/:bookid/edit/title" render={({match}) => {

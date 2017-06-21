@@ -71,6 +71,7 @@ class App extends React.Component {
   }
 
   render() {
+    console.log("App state: ", this.state);
     return (
       <Container>
         <Navbar loggedIn={this.state.loggedIn} />

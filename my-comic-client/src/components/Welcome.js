@@ -4,7 +4,6 @@ import { Grid, Divider, Segment, Image } from 'semantic-ui-react'
 
 class Welcome extends React.Component {
   render(){
-    console.log("props: ",this.props);
     return(
       <div>
         <div className='sky'>
@@ -33,7 +32,7 @@ class Welcome extends React.Component {
             <Grid.Row>
               <Grid.Column width={1} />
               <Grid.Column width={6}>
-                <Link to={'/comics'}>
+                <Link to={'/comics/my'}>
                   <Segment raised>
                     <h2 className='comic-font'>I want to see all of my super amazing comics!</h2>
                   </Segment>
