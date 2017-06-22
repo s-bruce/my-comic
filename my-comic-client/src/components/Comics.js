@@ -1,57 +1,51 @@
 import React from 'react'
-import { Grid, Divider, Card, Dimmer, Loader } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
+import { Grid, Divider, Card, Loader } from 'semantic-ui-react'
 
 import ComicPreview from './ComicPreview'
 
-class Comics extends React.Component{
+function Comics(props){
+  console.log("comics props: ",props);
 
-  componentDidMount(){
-    console.log("mounting. props: ",this.props);
-  }
+  const comicEls = props.userComics.map((comicBook, i) =>
+    <ComicPreview comicBook={comicBook} key={i} />
+  )
 
-  componentWillReceiveProps(props){
-    console.log("receiving props: ",props);
-  }
+  return(
+    <div>
+      <Divider hidden />
+      <Grid textAlign='center'>
+        <Grid.Row>
+          <h1 className='title-font'>My Comics</h1>
+        </Grid.Row>
+      </Grid>
+      <Divider hidden />
+      <Divider />
+      <Divider hidden />
 
-  render(){
-    const comicEls = this.props.userComics.map((comicBook, i) =>
-      <ComicPreview comicBook={comicBook} key={i} />
-    )
-
-    return(
-      <div>
-        <Divider hidden />
-        <Grid textAlign='center'>
-          <Grid.Row>
-            <h1 className='title-font'>My Comics</h1>
+      {props.fetchingComics ? (
+        <Loader active>Loading</Loader>
+      ) : (
+        <Grid>
+          <Grid.Row centered>
+            <Grid.Column width={13}>
+              <Card.Group>
+                {comicEls}
+              </Card.Group>
+            </Grid.Column>
           </Grid.Row>
         </Grid>
-        <Divider hidden />
-        <Divider />
+      )}
 
-        {comicEls.length === 0 ? (
-          <Dimmer active inverted>
-            <Loader inverted>Loading</Loader>
-          </Dimmer>
-        ): (
-          <div>
-            <Divider hidden />
-            <Grid>
-              <Grid.Row centered>
-                <Grid.Column width={13}>
-                  <Card.Group>
-                    {comicEls}
-                  </Card.Group>
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
-          </div>
-        )}
-
-
-      </div>
-    )
-  }
+      {!props.fetchingComics && props.userComics.length === 0 ? (
+        <Grid textAlign='center'>
+          <Grid.Row>
+            <h3>It looks like you haven't created any comics! <Link to={'/comics/new'}>Click here</Link> if you'd like to create a comic.</h3>
+          </Grid.Row>
+        </Grid>
+      ) : null }
+    </div>
+  )
 }
 
 export default Comics

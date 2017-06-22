@@ -17,6 +17,10 @@ class ComicsContainer extends React.Component{
     this.state = {
       // comics: [],
       userComics: [],
+<<<<<<< HEAD
+=======
+      fetchingComics: false
+>>>>>>> loader
     }
 
     this.handleCreateComicBook = this.handleCreateComicBook.bind(this)
@@ -27,6 +31,7 @@ class ComicsContainer extends React.Component{
   componentDidMount(){
     // fetchComics()
     // .then(comics => this.setState({comics: comics}))
+<<<<<<< HEAD
     if(this.props.user.id){
       fetchUserComics(this.props.user.id)
       .then(comicBooks => {
@@ -52,6 +57,10 @@ class ComicsContainer extends React.Component{
           }
           return 0;
         })
+=======
+    console.log("Container: componentDidMount. props: ",this.props);
+  }
+>>>>>>> loader
 
         this.setState({
           userComics: comicBooks
@@ -61,34 +70,30 @@ class ComicsContainer extends React.Component{
   }
   //
   componentWillReceiveProps(props){
+    console.log("Container: componentWillReceiveProps. props: ",props);
+    this.setState({fetchingComics: true})
+
     fetchUserComics(props.user.id)
     .then(comicBooks => {
       comicBooks.forEach(comicBook => {
-        comicBook.comics.sort(function(a, b) {
-          if (a.id < b.id) {
-            return -1;
-          }
-          if (a.id > b.id) {
-            return 1;
-          }
-          return 0;
+        comicBook.comics.forEach(comic => {
+          this.sortPanels(comic)
         })
-
       })
 
-      comicBooks.sort(function(a, b) {
-        if (a.id < b.id) {
-          return 1;
-        }
-        if (a.id > b.id) {
-          return -1;
-        }
-        return 0;
+      comicBooks.forEach(comicBook => {
+        this.sortComics(comicBook)
       })
 
+<<<<<<< HEAD
       this.setState({
         userComics: comicBooks
       })
+=======
+      this.sortComicBooks(comicBooks)
+
+      this.setState({userComics: comicBooks, fetchingComics: false})
+>>>>>>> loader
     })
   }
 
@@ -103,16 +108,11 @@ class ComicsContainer extends React.Component{
   handleUpdateComicBook(id, comic){
     updateComicBook(id, comic)
     .then(com => {
-      const sortedComics = com.comics.sort(function(a, b) {
-        if (a.id < b.id) {
-          return -1;
-        }
-        if (a.id > b.id) {
-          return 1;
-        }
-        return 0;
+      com.comics.forEach(comic => {
+        this.sortPanels(comic)
       })
-      com.comics = sortedComics
+
+      this.sortComics(com)
 
       this.setState(prevState => {
         const updatedComics = prevState.userComics.map(c => {
@@ -131,16 +131,11 @@ class ComicsContainer extends React.Component{
     const comic_book = { id, title }
     updateComicBook(id, comic_book)
     .then(com => {
-      const sortedComics = com.comics.sort(function(a, b) {
-        if (a.id < b.id) {
-          return -1;
-        }
-        if (a.id > b.id) {
-          return 1;
-        }
-        return 0;
+      com.comics.forEach(comic => {
+        this.sortPanels(comic)
       })
-      com.comics = sortedComics
+
+      this.sortComics(com)
 
       this.setState(prevState => {
         const updatedComics = prevState.userComics.map(c => {
@@ -155,6 +150,45 @@ class ComicsContainer extends React.Component{
     })
   }
 
+  sortPanels(comic){
+    comic.panels.sort(function(a, b) {
+      if (a.id < b.id) {
+        return -1;
+      }
+      if (a.id > b.id) {
+        return 1;
+      }
+      return 0;
+    })
+    return comic
+  }
+
+  sortComics(comicBook){
+    comicBook.comics.sort(function(a, b) {
+      if (a.id < b.id) {
+        return -1;
+      }
+      if (a.id > b.id) {
+        return 1;
+      }
+      return 0;
+    })
+    return comicBook
+  }
+
+  sortComicBooks(comicBooks){
+    comicBooks.sort(function(a, b) {
+      if (a.id < b.id) {
+        return 1;
+      }
+      if (a.id > b.id) {
+        return -1;
+      }
+      return 0;
+    })
+    return comicBooks
+  }
+
   render(){
     console.log("container state: ", this.state);
     return(
@@ -166,7 +200,11 @@ class ComicsContainer extends React.Component{
         ) : null }
 
         <Switch>
+<<<<<<< HEAD
           <Route exact path="/comics/my" render={()=> <Comics userComics={this.state.userComics}/>} />
+=======
+          <Route exact path="/comics" render={()=> <Comics userComics={this.state.userComics} fetchingComics={this.state.fetchingComics}/>} />
+>>>>>>> loader
           <Route path="/comics/welcome" render={() => <Welcome user={this.props.user} />} />
           <Route path="/comics/new" render={()=> <ComicFormContainer user={this.props.user} onCreate={this.handleCreateComicBook}/>} />
           <Route exact path="/comics/:bookid/edit/title" render={({match}) => {
