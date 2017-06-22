@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import { Grid, Divider, Segment, Button, Image, Dropdown, Header, Icon } from 'semantic-ui-react'
 
 class ComicBookShow extends React.Component {
@@ -56,13 +56,6 @@ class ComicBookShow extends React.Component {
       lastIndex = this.props.comicBook.comics.length - 1
     }
 
-    // const editOptions = [
-    //   { key: 'editPage', icon: 'edit', text: 'Edit Page', value: 'editPage', onClick: this.handleEditComic },
-    //   // { key: 'deletePage', icon: 'delete', text: 'Delete Page', value: 'deletePage' },
-    //   { key: 'editTitle', icon: 'edit', text: 'Edit Title', value: 'editTitle', onClick: this.handleEditTitle },
-    //   // { key: 'deleteBook', icon: 'delete', text: 'Delete Comic Book', value: 'deleteBook' },
-    // ]
-
     if (!this.props.comicBook){
       return null
     }
@@ -70,12 +63,6 @@ class ComicBookShow extends React.Component {
     return(
       <div>
         <Divider hidden />
-        {/* <Grid textAlign='center'>
-          <Grid.Row>
-            <h1 className='title-font'>{this.props.comicBook.title}</h1>
-          </Grid.Row>
-        </Grid>
-        <Divider hidden /> */}
 
         <Grid>
           <Grid.Row>
@@ -114,7 +101,7 @@ class ComicBookShow extends React.Component {
               }
             </Grid.Column>
             <Grid.Column floated='right' width={4}>
-              {this.state.currentIndex != lastIndex ?
+              {this.state.currentIndex !== lastIndex ?
                 <Button content='Next Page' color='blue' floated='right' onClick={this.nextPage} />
                 : null
               }
@@ -122,13 +109,6 @@ class ComicBookShow extends React.Component {
             <Grid.Column width={2} />
           </Grid.Row>
         </Grid>
-
-
-
-
-        {/* <Button.Group color='yellow'>
-          <Dropdown text='Edit' options={editOptions} floating button />
-        </Button.Group> */}
       </div>
     )
   }
@@ -137,23 +117,3 @@ class ComicBookShow extends React.Component {
 
 
 export default withRouter(ComicBookShow)
-
-{/* <Grid>
-  <Grid.Row centered>
-    <Grid.Column width={12} textAlign='center'>
-      <br/>
-      <h1 className="title-font">{props.comicBook.title}</h1>
-    </Grid.Column>
-  </Grid.Row>
-
-  <Grid.Row centered>
-    <Grid.Column width={12}>
-      <img src={props.comic.canvas_url} alt="" /><br/>
-    </Grid.Column>
-  </Grid.Row>
-  <Grid.Row centered>
-    <Grid.Column  width={12}>
-      <Link to={`/comics/${props.comic.id}/edit`}><Button content='Edit Comic' color='blue' /></Link>
-    </Grid.Column>
-  </Grid.Row>
-</Grid> */}

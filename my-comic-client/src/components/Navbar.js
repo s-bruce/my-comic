@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Image, Menu, Button } from 'semantic-ui-react'
+import { Image, Menu } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 
 class Navbar extends Component {
@@ -14,10 +14,10 @@ class Navbar extends Component {
               <Link to={`/comics/welcome`}><Image src={require('./logo_white.png')} size='small' /></Link>
             </Menu.Item>
             <Menu.Item />
-            <Link to={`/comics/my`}><Menu.Item name='comics' className='comic-font' onClick={this.handleItemClick}><br/><br/>My Comics</Menu.Item></Link>
-            <Link to={`/comics/new`}><Menu.Item name='new' className='comic-font' onClick={this.handleItemClick}><br/><br/>Create A Comic</Menu.Item></Link>
+            <Menu.Item name='comics' className='comic-font' onClick={this.handleItemClick}><Link to={`/comics`}>{this.props.currentUser.username}'s Comics</Link></Menu.Item>
+            <Menu.Item name='new' className='comic-font' onClick={this.handleItemClick}><Link to={`/comics/new`}>Create A Comic</Link></Menu.Item>
             <Menu.Menu position='right'>
-              <Link to={`/logout`}><Menu.Item name='logout' className='comic-font' onClick={this.handleItemClick}><br/><br/>Log Out</Menu.Item></Link>
+              <Menu.Item name='logout' className='comic-font' onClick={this.handleItemClick}><Link to={`/logout`}>Log Out</Link></Menu.Item>
             </Menu.Menu>
           </Menu>
         ) : (

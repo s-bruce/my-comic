@@ -1,11 +1,6 @@
 import React from 'react'
 import { Grid, Divider, Segment, Form, Image } from 'semantic-ui-react'
 
-const options = [
-  { key: '2', text: 'Two', value: 2 },
-  { key: '4', text: 'Four', value: 4 },
-]
-
 class FormWelcome extends React.Component {
   constructor(){
     super()

@@ -2,7 +2,7 @@ import React from 'react'
 import { Switch, Route, withRouter } from 'react-router-dom'
 import { Dimmer, Loader } from 'semantic-ui-react'
 
-import { fetchComics, fetchUserComics, createComicBook, updateComicBook } from '../api'
+import { fetchUserComics, createComicBook, updateComicBook } from '../api'
 import Welcome from '../components/Welcome'
 import Comics from '../components/Comics'
 import ComicFormContainer from './ComicFormContainer'
@@ -17,10 +17,7 @@ class ComicsContainer extends React.Component{
     this.state = {
       // comics: [],
       userComics: [],
-<<<<<<< HEAD
-=======
       fetchingComics: false
->>>>>>> loader
     }
 
     this.handleCreateComicBook = this.handleCreateComicBook.bind(this)
@@ -28,49 +25,7 @@ class ComicsContainer extends React.Component{
     this.handleUpdateTitle = this.handleUpdateTitle.bind(this)
   }
 
-  componentDidMount(){
-    // fetchComics()
-    // .then(comics => this.setState({comics: comics}))
-<<<<<<< HEAD
-    if(this.props.user.id){
-      fetchUserComics(this.props.user.id)
-      .then(comicBooks => {
-        comicBooks.forEach(comicBook => {
-          comicBook.comics.sort(function(a, b) {
-            if (a.id < b.id) {
-              return -1;
-            }
-            if (a.id > b.id) {
-              return 1;
-            }
-            return 0;
-          })
-
-        })
-
-        comicBooks.sort(function(a, b) {
-          if (a.id < b.id) {
-            return 1;
-          }
-          if (a.id > b.id) {
-            return -1;
-          }
-          return 0;
-        })
-=======
-    console.log("Container: componentDidMount. props: ",this.props);
-  }
->>>>>>> loader
-
-        this.setState({
-          userComics: comicBooks
-        })
-      })
-    }
-  }
-  //
   componentWillReceiveProps(props){
-    console.log("Container: componentWillReceiveProps. props: ",props);
     this.setState({fetchingComics: true})
 
     fetchUserComics(props.user.id)
@@ -85,15 +40,9 @@ class ComicsContainer extends React.Component{
         this.sortComics(comicBook)
       })
 
-<<<<<<< HEAD
-      this.setState({
-        userComics: comicBooks
-      })
-=======
       this.sortComicBooks(comicBooks)
 
       this.setState({userComics: comicBooks, fetchingComics: false})
->>>>>>> loader
     })
   }
 
@@ -190,7 +139,6 @@ class ComicsContainer extends React.Component{
   }
 
   render(){
-    console.log("container state: ", this.state);
     return(
       <div>
         {this.state.loading ? (
@@ -200,24 +148,20 @@ class ComicsContainer extends React.Component{
         ) : null }
 
         <Switch>
-<<<<<<< HEAD
-          <Route exact path="/comics/my" render={()=> <Comics userComics={this.state.userComics}/>} />
-=======
-          <Route exact path="/comics" render={()=> <Comics userComics={this.state.userComics} fetchingComics={this.state.fetchingComics}/>} />
->>>>>>> loader
+          <Route exact path="/comics" render={()=> <Comics userComics={this.state.userComics} fetchingComics={this.state.fetchingComics} user={this.props.user}/>} />
           <Route path="/comics/welcome" render={() => <Welcome user={this.props.user} />} />
           <Route path="/comics/new" render={()=> <ComicFormContainer user={this.props.user} onCreate={this.handleCreateComicBook}/>} />
           <Route exact path="/comics/:bookid/edit/title" render={({match}) => {
-            const comicBook = this.state.userComics.find(comicBook => comicBook.id === parseInt(match.params.bookid))
+            const comicBook = this.state.userComics.find(comicBook => comicBook.id === parseInt(match.params.bookid, 10))
             return <TitleEditForm comicBook={comicBook} onUpdate={this.handleUpdateTitle} />}}
           />
           <Route path="/comics/:bookid/edit/:comicid" render={({match}) => {
-            const comicBook = this.state.userComics.find(comicBook => comicBook.id === parseInt(match.params.bookid))
-            const comic = comicBook.comics.find(comic => comic.id === parseInt(match.params.comicid))
+            const comicBook = this.state.userComics.find(comicBook => comicBook.id === parseInt(match.params.bookid, 10))
+            const comic = comicBook.comics.find(comic => comic.id === parseInt(match.params.comicid, 10))
             return <ComicEditFormContainer comicBook={comicBook} comic={comic} onUpdate={this.handleUpdateComicBook} />}}
           />
           <Route path="/comics/:id" render={({match}) => {
-            const comicBook = this.state.userComics.find(comicBook => comicBook.id === parseInt(match.params.id))
+            const comicBook = this.state.userComics.find(comicBook => comicBook.id === parseInt(match.params.id, 10))
             return <ComicBookShow comicBook={comicBook} />}}
           />
         </Switch>

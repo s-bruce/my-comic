@@ -32,7 +32,7 @@ class Welcome extends React.Component {
             <Grid.Row>
               <Grid.Column width={1} />
               <Grid.Column width={6}>
-                <Link to={'/comics/my'}>
+                <Link to={'/comics'}>
                   <Segment raised>
                     <h2 className='comic-font'>I want to see all of my super amazing comics!</h2>
                   </Segment>

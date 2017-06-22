@@ -71,10 +71,9 @@ class App extends React.Component {
   }
 
   render() {
-    console.log("App state: ", this.state);
     return (
       <Container>
-        <Navbar loggedIn={this.state.loggedIn} />
+        <Navbar loggedIn={this.state.loggedIn} currentUser={this.state.currentUser} />
         <Switch>
           <Route path="/signup" render={() => <SignupForm handleSignup={this.handleSignup} />} />
           <Route path="/login" render={() => <LoginForm handleLogin={this.handleLogin} />} />

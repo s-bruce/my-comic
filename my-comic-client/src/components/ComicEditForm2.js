@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import request from 'superagent'
 import { Grid, Divider, Segment, Button, Form, Image, Message } from 'semantic-ui-react'
 
-import ComicCreateForm2Copy from './ComicCreateForm2'
 import Canvas2 from './Canvas2'
 import MasterCanvas from './MasterCanvas'
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Grid, Divider, Segment, Button, Form, Message } from 'semantic-ui-react'
+import { Grid, Divider, Segment, Form, Message } from 'semantic-ui-react'
 
 class SignupForm extends React.Component {
   constructor(){

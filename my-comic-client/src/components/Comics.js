@@ -6,7 +6,6 @@ import ComicPreview from './ComicPreview'
 
 function Comics(props){
   console.log("comics props: ",props);
-
   const comicEls = props.userComics.map((comicBook, i) =>
     <ComicPreview comicBook={comicBook} key={i} />
   )
@@ -16,7 +15,7 @@ function Comics(props){
       <Divider hidden />
       <Grid textAlign='center'>
         <Grid.Row>
-          <h1 className='title-font'>My Comics</h1>
+          <h1 className='title-font'>{props.user.username}'s Comics</h1>
         </Grid.Row>
       </Grid>
       <Divider hidden />

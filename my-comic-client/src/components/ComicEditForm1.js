@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import request from 'superagent'
-import { Grid, Divider, Segment, Button, Form, Image, Message } from 'semantic-ui-react'
+import { Grid, Divider, Segment, Form, Image, Message } from 'semantic-ui-react'
 
 import Canvas from './Canvas'
 
@@ -122,6 +122,7 @@ class ComicEditForm1 extends React.Component {
     if (!this.props.comic) {
       return null
     }
+    console.log("edit form image one: ", this.state.comic.panels[0].image_url);
 
     return(
       <div>

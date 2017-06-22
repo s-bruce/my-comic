@@ -39,7 +39,6 @@ export function fetchComics(){
 }
 
 export function fetchUserComics(id){
-  console.log("fetchUserComics");
   return fetch(`http://localhost:3000/api/v1/usercomics/${id}`, {
     headers: {
       'Authorization': localStorage.getItem('jwt')
