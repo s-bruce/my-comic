@@ -33,31 +33,20 @@ class ComicsContainer extends React.Component{
   componentWillReceiveProps(props){
     console.log("Container: componentWillReceiveProps. props: ",props);
     this.setState({fetchingComics: true})
-    
+
     fetchUserComics(props.user.id)
     .then(comicBooks => {
       comicBooks.forEach(comicBook => {
-        comicBook.comics.sort(function(a, b) {
-          if (a.id < b.id) {
-            return -1;
-          }
-          if (a.id > b.id) {
-            return 1;
-          }
-          return 0;
+        comicBook.comics.forEach(comic => {
+          this.sortPanels(comic)
         })
-
       })
 
-      comicBooks.sort(function(a, b) {
-        if (a.id < b.id) {
-          return 1;
-        }
-        if (a.id > b.id) {
-          return -1;
-        }
-        return 0;
+      comicBooks.forEach(comicBook => {
+        this.sortComics(comicBook)
       })
+
+      this.sortComicBooks(comicBooks)
 
       this.setState({userComics: comicBooks, fetchingComics: false})
     })
@@ -74,16 +63,11 @@ class ComicsContainer extends React.Component{
   handleUpdateComicBook(id, comic){
     updateComicBook(id, comic)
     .then(com => {
-      const sortedComics = com.comics.sort(function(a, b) {
-        if (a.id < b.id) {
-          return -1;
-        }
-        if (a.id > b.id) {
-          return 1;
-        }
-        return 0;
+      com.comics.forEach(comic => {
+        this.sortPanels(comic)
       })
-      com.comics = sortedComics
+
+      this.sortComics(com)
 
       this.setState(prevState => {
         const updatedComics = prevState.userComics.map(c => {
@@ -102,16 +86,11 @@ class ComicsContainer extends React.Component{
     const comic_book = { id, title }
     updateComicBook(id, comic_book)
     .then(com => {
-      const sortedComics = com.comics.sort(function(a, b) {
-        if (a.id < b.id) {
-          return -1;
-        }
-        if (a.id > b.id) {
-          return 1;
-        }
-        return 0;
+      com.comics.forEach(comic => {
+        this.sortPanels(comic)
       })
-      com.comics = sortedComics
+
+      this.sortComics(com)
 
       this.setState(prevState => {
         const updatedComics = prevState.userComics.map(c => {
@@ -124,6 +103,45 @@ class ComicsContainer extends React.Component{
         return { userComics: updatedComics }
       })
     })
+  }
+
+  sortPanels(comic){
+    comic.panels.sort(function(a, b) {
+      if (a.id < b.id) {
+        return -1;
+      }
+      if (a.id > b.id) {
+        return 1;
+      }
+      return 0;
+    })
+    return comic
+  }
+
+  sortComics(comicBook){
+    comicBook.comics.sort(function(a, b) {
+      if (a.id < b.id) {
+        return -1;
+      }
+      if (a.id > b.id) {
+        return 1;
+      }
+      return 0;
+    })
+    return comicBook
+  }
+
+  sortComicBooks(comicBooks){
+    comicBooks.sort(function(a, b) {
+      if (a.id < b.id) {
+        return 1;
+      }
+      if (a.id > b.id) {
+        return -1;
+      }
+      return 0;
+    })
+    return comicBooks
   }
 
   render(){

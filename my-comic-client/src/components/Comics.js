@@ -40,7 +40,7 @@ function Comics(props){
       {!props.fetchingComics && props.userComics.length === 0 ? (
         <Grid textAlign='center'>
           <Grid.Row>
-            <h3>It looks like you have created any comics! <Link to={'/comics/new'}>Click here</Link> if you'd like to create a comic.</h3>
+            <h3>It looks like you haven't created any comics! <Link to={'/comics/new'}>Click here</Link> if you'd like to create a comic.</h3>
           </Grid.Row>
         </Grid>
       ) : null }
