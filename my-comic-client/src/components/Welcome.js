@@ -4,7 +4,6 @@ import { Grid, Divider, Segment, Image } from 'semantic-ui-react'
 
 class Welcome extends React.Component {
   render(){
-    console.log("props: ",this.props);
     return(
       <div>
         <div className='sky'>

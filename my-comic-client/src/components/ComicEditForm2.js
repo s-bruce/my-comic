@@ -163,6 +163,7 @@ class ComicEditForm2 extends React.Component {
                 <Form onSubmit={(e)=> {this.handleSubmit(e, 0, 'renderCanvas1')}}>
                   <h3 className='comic-font'>Panel One:</h3>
                   <Form.Input type='file' label='Choose a different image (optional)' onChange={(e)=> {this.handleFileUpload(e, 0)}} />
+                  <Image size='small' src={this.state.comic.panels[0].image_url} /><br/>
                   <Form.TextArea rows='3' label='Text:' value={this.state.comic.panels[0].text} required onChange={(e)=> {this.handleTextChange(e, 0)}} />
                   <Form.Button type='submit' content='Edit Panel One' color='yellow' />
                 </Form>
@@ -194,6 +195,7 @@ class ComicEditForm2 extends React.Component {
                     <Form onSubmit={(e)=> {this.handleSubmit(e, 1, 'renderCanvas2')}}>
                       <h3 className='comic-font'>Panel Two:</h3>
                       <Form.Input type='file' label='Choose a different image (optional)' onChange={(e)=> {this.handleFileUpload(e, 1)}} />
+                      <Image size='small' src={this.state.comic.panels[1].image_url} /><br/>
                       <Form.TextArea rows='3' label='Edit text:' value={this.state.comic.panels[1].text} required onChange={(e)=> {this.handleTextChange(e, 1)}} />
                       <Form.Button type='submit' content='Edit Panel Two' color='yellow' />
                     </Form>

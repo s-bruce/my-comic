@@ -63,6 +63,7 @@ class ComicEditFormContainer extends React.Component {
   }
 
   render(){
+    console.log("Form container props: ",this.props);
     return(
       <div>
         {this.props.comic.panels.length === 1 ?

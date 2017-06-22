@@ -15,7 +15,8 @@ class ComicsContainer extends React.Component{
 
     this.state = {
       // comics: [],
-      userComics: []
+      userComics: [],
+      fetchingComics: false
     }
 
     this.handleCreateComicBook = this.handleCreateComicBook.bind(this)
@@ -26,9 +27,13 @@ class ComicsContainer extends React.Component{
   componentDidMount(){
     // fetchComics()
     // .then(comics => this.setState({comics: comics}))
+    console.log("Container: componentDidMount. props: ",this.props);
   }
 
   componentWillReceiveProps(props){
+    console.log("Container: componentWillReceiveProps. props: ",props);
+    this.setState({fetchingComics: true})
+    
     fetchUserComics(props.user.id)
     .then(comicBooks => {
       comicBooks.forEach(comicBook => {
@@ -54,7 +59,7 @@ class ComicsContainer extends React.Component{
         return 0;
       })
 
-      this.setState({userComics: comicBooks})
+      this.setState({userComics: comicBooks, fetchingComics: false})
     })
   }
 
@@ -126,7 +131,7 @@ class ComicsContainer extends React.Component{
     return(
       <div>
         <Switch>
-          <Route exact path="/comics" render={()=> <Comics userComics={this.state.userComics}/>} />
+          <Route exact path="/comics" render={()=> <Comics userComics={this.state.userComics} fetchingComics={this.state.fetchingComics}/>} />
           <Route path="/comics/welcome" render={() => <Welcome user={this.props.user} />} />
           <Route path="/comics/new" render={()=> <ComicFormContainer user={this.props.user} onCreate={this.handleCreateComicBook}/>} />
           <Route exact path="/comics/:bookid/edit/title" render={({match}) => {

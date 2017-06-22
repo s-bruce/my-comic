@@ -1,9 +1,12 @@
 import React from 'react'
-import { Grid, Divider, Card } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
+import { Grid, Divider, Card, Loader } from 'semantic-ui-react'
 
 import ComicPreview from './ComicPreview'
 
 function Comics(props){
+  console.log("comics props: ",props);
+
   const comicEls = props.userComics.map((comicBook, i) =>
     <ComicPreview comicBook={comicBook} key={i} />
   )
@@ -18,19 +21,29 @@ function Comics(props){
       </Grid>
       <Divider hidden />
       <Divider />
-
       <Divider hidden />
-      <Grid>
-        <Grid.Row centered>
-          <Grid.Column width={13}>
-            <Card.Group>
-              {comicEls}
-            </Card.Group>
-          </Grid.Column>
-        </Grid.Row>
 
-      </Grid>
+      {props.fetchingComics ? (
+        <Loader active>Loading</Loader>
+      ) : (
+        <Grid>
+          <Grid.Row centered>
+            <Grid.Column width={13}>
+              <Card.Group>
+                {comicEls}
+              </Card.Group>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      )}
 
+      {!props.fetchingComics && props.userComics.length === 0 ? (
+        <Grid textAlign='center'>
+          <Grid.Row>
+            <h3>It looks like you have created any comics! <Link to={'/comics/new'}>Click here</Link> if you'd like to create a comic.</h3>
+          </Grid.Row>
+        </Grid>
+      ) : null }
     </div>
   )
 }

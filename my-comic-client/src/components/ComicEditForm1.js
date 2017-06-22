@@ -141,6 +141,7 @@ class ComicEditForm1 extends React.Component {
               <Segment color='blue' inverted padded>
                 <Form onSubmit={this.handleSubmit}>
                   <Form.Input type='file' label='Choose a different image (optional)' onChange={this.handleFileUpload} />
+                  <Image size='small' src={this.state.comic.panels[0].image_url} /><br/>
                   <Form.TextArea rows='3' label='Text:' value={this.state.comic.panels[0].text} required onChange={(e)=> {this.handleTextChange(e)}} />
                   <Form.Button type='submit' content='Edit Page' color='yellow' />
                 </Form>
