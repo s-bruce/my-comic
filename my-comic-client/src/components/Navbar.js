@@ -14,10 +14,10 @@ class Navbar extends Component {
               <Link to={`/comics/welcome`}><Image src={require('./logo_white.png')} size='small' /></Link>
             </Menu.Item>
             <Menu.Item />
-            <Menu.Item name='comics' className='comic-font' onClick={this.handleItemClick}><Link to={`/comics`}>{this.props.currentUser.username}'s Comics</Link></Menu.Item>
-            <Menu.Item name='new' className='comic-font' onClick={this.handleItemClick}><Link to={`/comics/new`}>Create A Comic</Link></Menu.Item>
+            <Menu.Item name='comics' className='comic-font'><Link to={`/comics`}>{this.props.currentUser.username}'s Comics</Link></Menu.Item>
+            <Menu.Item name='new' className='comic-font'><Link to={`/comics/new`}>Create A Comic</Link></Menu.Item>
             <Menu.Menu position='right'>
-              <Menu.Item name='logout' className='comic-font' onClick={this.handleItemClick}><Link to={`/logout`}>Log Out</Link></Menu.Item>
+              <Menu.Item name='logout' className='comic-font'><Link to={`/logout`}>Log Out</Link></Menu.Item>
             </Menu.Menu>
           </Menu>
         ) : (
@@ -26,8 +26,8 @@ class Navbar extends Component {
               <Image src={require('./logo_white.png')} size='small' />
             </Menu.Item>
             <Menu.Item />
-            <Link to={`/signup`}><Menu.Item name='signup' className='comic-font' onClick={this.handleItemClick}><br/><br/>Sign Up</Menu.Item></Link>
-            <Link to={`/login`}><Menu.Item name='login' className='comic-font' onClick={this.handleItemClick}><br/><br/>Log In</Menu.Item></Link>
+            <Menu.Item name='signup' className='comic-font'><Link to={`/signup`}>Sign Up</Link></Menu.Item>
+            <Menu.Item name='login' className='comic-font'><Link to={`/login`}>Log In</Link></Menu.Item>
           </Menu>
         )}
       </div>
