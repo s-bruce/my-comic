@@ -122,7 +122,6 @@ class ComicEditForm1 extends React.Component {
     if (!this.props.comic) {
       return null
     }
-    console.log("edit form image one: ", this.state.comic.panels[0].image_url);
 
     return(
       <div>

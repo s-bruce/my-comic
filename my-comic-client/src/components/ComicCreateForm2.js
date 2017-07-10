@@ -143,7 +143,6 @@ class ComicCreateForm2 extends React.Component {
   }
 
   handleCreateComicBook(){
-    console.log("form2 handleCreateComicBook");
     this.props.onCreateComicBook()
   }
 
@@ -256,16 +255,6 @@ class ComicCreateForm2 extends React.Component {
                 </div>
                 )
                 : null }
-
-              {/* {this.state.comicCreated ? (
-                <div>
-                  <h3>What do you want to do next?</h3>
-                  <Button basic content='Create a one-panel page' color='blue' onClick={()=> {this.handleRenderAnotherForm(1)}} />
-                  <Button basic content='Create a two-panel page' color='blue' onClick={()=> {this.handleRenderAnotherForm(2)}} />
-                  <Button content="I'm finished! Show me my comic book" color='blue' floated='right' onClick={this.handleCreateComicBook} />
-                </div>
-              )
-              : null } */}
 
               {this.state.renderCanvas1 ?
                 (<Canvas2 panel={this.state.comic.panels[0]} createPanel={this.handleCreatePanelOne} />)

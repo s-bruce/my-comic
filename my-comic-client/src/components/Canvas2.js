@@ -1,7 +1,5 @@
 import React from 'react'
 
-
-
 class Canvas2 extends React.Component {
   constructor(){
     super()
@@ -16,22 +14,10 @@ class Canvas2 extends React.Component {
     const img1 = this.refs.image1
     img1.onload = () => {
       this.state.context1.drawImage(img1,0,0)
-      // const text1 = this.props.comic.panels[0].text
-      // this.wrapAndRenderText(this.state.context1, text1)
       this.wrapAndRenderText()
-      // this.renderRect(this.state.context1)
       this.renderRect()
       this.wrapAndRenderText()
-      // this.wrapAndRenderText(this.state.context1, text1)
 
-      // this.drawCanvas1(img1)
-      // const img2 = this.refs.image2
-      // console.log("img2: ", img2);
-      // img2.onload = () => {
-      //   console.log("image 2 loaded");
-      //   this.drawCanvas2(img2)
-      //   this.drawCanvasMaster()
-      // }
       if(this.props.createPanel){
         this.handleCreatePanel()
       } else if(this.props.updatePanel){
@@ -95,11 +81,8 @@ class Canvas2 extends React.Component {
     return (
       <div>
         <div>
-          {/* <canvas ref="canvasMaster" width={800} height={1100} /> */}
           <canvas ref="canvas1" width={800} height={550} className="hidden-image" />
-          {/* <canvas ref="canvas2" width={800} height={550} /> */}
           <img ref="image1" src={this.props.panel.scaledImageUrl} className="hidden-image" alt="" crossOrigin="Anonymous" />
-          {/* <img ref="image2" src={this.props.comic.panels[1].scaledImageUrl} className="hidden-image" alt="" crossOrigin="Anonymous" /> */}
         </div>
       </div>
     )

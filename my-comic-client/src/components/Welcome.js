@@ -21,7 +21,6 @@ class Welcome extends React.Component {
                   <h1 className='comic-font'>What adventures await you today?</h1>
                 </Segment>
               </Grid.Column>
-              {/* <Grid.Column width={2} /> */}
             </Grid.Row>
           </Grid>
           <Divider hidden /><Divider hidden /><Divider hidden /><Divider hidden />

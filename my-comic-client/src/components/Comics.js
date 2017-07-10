@@ -5,7 +5,6 @@ import { Grid, Divider, Card, Loader } from 'semantic-ui-react'
 import ComicPreview from './ComicPreview'
 
 function Comics(props){
-  console.log("comics props: ",props);
   const comicEls = props.userComics.map((comicBook, i) =>
     <ComicPreview comicBook={comicBook} key={i} />
   )

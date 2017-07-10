@@ -105,8 +105,6 @@ class ComicCreateForm1 extends React.Component {
 
     this.props.onCreateComic(comic)
     this.setState({comicCreated: true})
-
-    // window.scrollTo(0,document.body.scrollHeight)
   }
 
   handleRenderAnotherForm(numOfPanels){
@@ -177,12 +175,9 @@ class ComicCreateForm1 extends React.Component {
               </Grid.Row>
             </Grid>
 
-
-
-
-              {this.state.renderCanvas ?
-                (<Canvas comic={this.state.comic} scaledImageUrl={this.state.scaledImageUrl} createComic={this.handleCreateComic} />)
-                : null }
+            {this.state.renderCanvas ?
+              (<Canvas comic={this.state.comic} scaledImageUrl={this.state.scaledImageUrl} createComic={this.handleCreateComic} />)
+              : null }
           </div>
         )}
       </div>
