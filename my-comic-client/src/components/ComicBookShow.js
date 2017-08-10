@@ -1,6 +1,6 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
-import { Grid, Divider, Segment, Button, Image, Dropdown, Header, Icon } from 'semantic-ui-react'
+import { Grid, Divider, Segment, Button, Image, Dropdown, Header, Icon, Menu } from 'semantic-ui-react'
 
 class ComicBookShow extends React.Component {
   constructor(){
@@ -47,6 +47,11 @@ class ComicBookShow extends React.Component {
   render(){
     let comicEls = []
     let lastIndex = 0
+    const trigger = (
+      <span>
+        <Icon name='setting' size='large' />
+      </span>
+    )
 
     if (this.props.comicBook){
       comicEls = this.props.comicBook.comics.map(comic =>
@@ -74,7 +79,14 @@ class ComicBookShow extends React.Component {
               </Segment>
             </Grid.Column>
             <Grid.Column width={2}>
-              <Header as='h4'>
+              <Dropdown trigger={trigger} floating labeled button className='icon'>
+                <Dropdown.Menu>
+                  <Dropdown.Item text='Edit Page' onClick={this.handleEditComic} />
+                  <Dropdown.Item text='Edit Title' onClick={this.handleEditTitle} />
+                  <Dropdown.Item><a href={this.props.comicBook.comics[this.state.currentIndex].canvas_url} download="MyComic.png">Download Page</a></Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+              {/* <Header as='h4'>
                 <Icon name='edit' />
                 <Header.Content>
                   Edit
@@ -85,8 +97,12 @@ class ComicBookShow extends React.Component {
                     <Dropdown.Item text='Edit Title' onClick={this.handleEditTitle} />
                   </Dropdown.Menu>
                 </Dropdown>
-              </Header>
-            <a href={this.props.comicBook.comics[this.state.currentIndex].canvas_url} download="MyComic.png">Download page</a>
+              </Header> */}
+              {/* <a href={this.props.comicBook.comics[this.state.currentIndex].canvas_url} download="MyComic.png">
+                <Button>
+                  Download Page <Icon name='download' />
+                </Button>
+              </a> */}
             </Grid.Column>
           </Grid.Row>
         </Grid>
