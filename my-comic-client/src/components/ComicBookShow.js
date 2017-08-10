@@ -86,7 +86,7 @@ class ComicBookShow extends React.Component {
                   </Dropdown.Menu>
                 </Dropdown>
               </Header>
-
+            <a href={this.props.comicBook.comics[this.state.currentIndex].canvas_url} download="MyComic.png">Download page</a>
             </Grid.Column>
           </Grid.Row>
         </Grid>
