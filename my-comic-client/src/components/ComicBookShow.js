@@ -47,11 +47,14 @@ class ComicBookShow extends React.Component {
   render(){
     let comicEls = []
     let lastIndex = 0
+    let download = ""
+
     const trigger = (
       <span>
         <Icon name='setting' size='large' />
       </span>
     )
+
 
     if (this.props.comicBook){
       comicEls = this.props.comicBook.comics.map(comic =>
@@ -59,6 +62,8 @@ class ComicBookShow extends React.Component {
       )
 
       lastIndex = this.props.comicBook.comics.length - 1
+
+      download = this.props.comicBook.title + " p." + (this.state.currentIndex + 1)
     }
 
     if (!this.props.comicBook){
@@ -83,7 +88,7 @@ class ComicBookShow extends React.Component {
                 <Dropdown.Menu>
                   <Dropdown.Item text='Edit Page' onClick={this.handleEditComic} />
                   <Dropdown.Item text='Edit Title' onClick={this.handleEditTitle} />
-                  <Dropdown.Item><a href={this.props.comicBook.comics[this.state.currentIndex].canvas_url} download="MyComic.png">Download Page</a></Dropdown.Item>
+                  <Dropdown.Item><a href={this.props.comicBook.comics[this.state.currentIndex].canvas_url} download={download}>Download Page</a></Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
               {/* <Header as='h4'>
