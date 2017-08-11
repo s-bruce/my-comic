@@ -81,6 +81,8 @@ class ComicBookShow extends React.Component {
               <Segment raised textAlign='center'>
                 <h1 className='title-font'>{this.props.comicBook.title}</h1>
                 {comicEls[this.state.currentIndex]}
+                <br />
+                {this.state.currentIndex + 1}
               </Segment>
             </Grid.Column>
             <Grid.Column width={2}>
