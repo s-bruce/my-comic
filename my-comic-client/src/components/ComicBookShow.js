@@ -63,7 +63,7 @@ class ComicBookShow extends React.Component {
 
       lastIndex = this.props.comicBook.comics.length - 1
 
-      download = this.props.comicBook.title + " p." + (this.state.currentIndex + 1)
+      download = this.props.comicBook.title + " p." + (this.state.currentIndex + 1) + ".png"
     }
 
     if (!this.props.comicBook){
